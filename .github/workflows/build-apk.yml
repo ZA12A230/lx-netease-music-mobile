@@ -54,6 +54,12 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
+      - name: Patch gradle-plugin for Gradle 8.14.4 compatibility
+        run: |
+          # 禁用 gradle-plugin 的 allWarningsAsErrors，避免 Kotlin warning 导致编译失败
+          sed -i 's/allWarningsAsErrors = true/allWarningsAsErrors = false/' \
+            node_modules/@react-native/gradle-plugin/build.gradle.kts
+
       - name: Generate debug keystore (if not exists)
         run: |
           if [ ! -f android/app/debug.keystore ]; then
