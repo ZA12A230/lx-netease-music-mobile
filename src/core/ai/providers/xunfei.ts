@@ -1,7 +1,9 @@
+// @ts-nocheck
 /**
  * 科大讯飞星火 WebSocket 提供商（内置可用，无需用户配置密钥）
+ * 支持 Spark Ultra-32K、Spark X (X2)、Spark X (X1.5)
  */
-import { getXunfeiConfig } from '../config'
+import { getXunfeiConfig, type XunfeiConfig } from '../config'
 import { hmacSha256, strToBytes, bytesToBase64 } from '../sha256'
 
 export interface ChatMessage {
@@ -21,8 +23,7 @@ const urlencode = (str: string): string => {
 /**
  * 生成科大讯飞鉴权 URL
  */
-const buildAuthUrl = (): string => {
-  const config = getXunfeiConfig()
+const buildAuthUrl = (config: XunfeiConfig): string => {
   const url = new URL(config.wssUrl)
   const host = url.host
   const path = url.pathname || '/'
@@ -40,17 +41,22 @@ const buildAuthUrl = (): string => {
 
 /**
  * 科大讯飞对话（流式）
+ * @param messages 消息列表
+ * @param onChunk 流式回调
+ * @param onToolCall 工具调用回调
+ * @param serviceId 服务 ID（用于选择不同的讯飞模型配置）
  */
 export const xunfeiChat = (
   messages: ChatMessage[],
   onChunk?: (text: string) => void,
-  onToolCall?: (toolCall: any) => void
+  onToolCall?: (toolCall: any) => void,
+  serviceId: string = 'xunfei'
 ): Promise<ChatResult> => {
   return new Promise((resolve, reject) => {
-    const config = getXunfeiConfig()
+    const config = getXunfeiConfig(serviceId)
     let authUrl: string
     try {
-      authUrl = buildAuthUrl()
+      authUrl = buildAuthUrl(config)
     } catch (err: any) {
       reject(new Error('鉴权失败: ' + err.message))
       return
@@ -83,7 +89,7 @@ export const xunfeiChat = (
         },
         parameter: {
           chat: {
-            domain: config.model,
+            domain: config.domain,
             max_tokens: 4096,
             temperature: 0.5,
           },

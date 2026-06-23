@@ -93,7 +93,7 @@ const callAI = async (
 ): Promise<string> => {
   const config = getActiveServiceConfig()
   if (config.type === 'xunfei') {
-    const result = await xunfeiChat(messages, onChunk)
+    const result = await xunfeiChat(messages, onChunk, undefined, config.id)
     return result.content
   } else {
     const apiKey = getUserApiKey(config.id)

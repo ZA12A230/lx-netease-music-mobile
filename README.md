@@ -1,20 +1,43 @@
-<p align="center"><a href="https://github.com/lyswhut/lx-music-mobile"><img width="200" src="https://github.com/lyswhut/lx-music-mobile/blob/master/doc/images/icon.png" alt="lx-music logo"></a></p>
+<p align="center"><a href="https://github.com/ZA12A230/lx-netease-music-mobile"><img width="200" src="https://github.com/lyswhut/lx-music-mobile/blob/master/doc/images/icon.png" alt="lx-music logo"></a></p>
 
 <h1 align="center">LX-N Music 移动版</h1>
 
 <p align="center">
   <a href="https://github.com/ZA12A230/lx-netease-music-mobile/releases"><img src="https://img.shields.io/github/release/ZA12A230/lx-netease-music-mobile" alt="Release version"></a>
-  <a href="https://github.com/ZA12A230/lx-netease-music-mobile/actions/workflows/release.yml"><img src="https://github.com/ZA12A230/lx-netease-music-mobile/workflows/Build/badge.svg" alt="Build status"></a>
+  <a href="https://github.com/ZA12A230/lx-netease-music-mobile/actions/workflows/build-apk.yml"><img src="https://github.com/ZA12A230/lx-netease-music-mobile/actions/workflows/build-apk.yml/badge.svg" alt="Build status"></a>
   <a href="https://github.com/facebook/react-native"><img src="https://img.shields.io/github/package-json/dependency-version/ZA12A230/lx-netease-music-mobile/react-native/master" alt="React native version"></a>
 </p>
 
-<p align="center">一个基于 React Native 开发的音乐软件</p>
+<p align="center">一个基于 React Native 开发的音乐软件 | 开发者：G佑</p>
 
 这个库在lx-music-mobile和ikun-music基础上继续改造，以满足个人需求
 - https://github.com/lyswhut/lx-music-mobile
 - https://github.com/ikunshare/ikun-music-mobile
 
 涉及同步、备份未充分测试，自行备份重要文件
+
+## 下载安装
+前往 [Releases 页面](https://github.com/ZA12A230/lx-netease-music-mobile/releases) 下载最新 APK 安装即可。
+
+### 1.8.86（G佑 二次开发版）
+#### 新增功能
+- **内置音源**：5 个音源自动导入（野草、六音、小熊猫、梓澄、Huibq），无需手动配置
+- **iOS 26 液态玻璃风格**：全局按键采用毛玻璃模糊 + 半透明 + 柔和阴影 + 圆角设计
+- **AI 助手功能**：
+  - 内置 3 个科大讯飞 AI（Spark Ultra-32K、Spark X X2、Spark X X1.5），开箱即用
+  - 支持 9+ 主流 AI 平台：Kimi、通义千问、DeepSeek、OpenAI、Claude、豆包、Gemini、智谱
+  - AI 全自动操控软件：搜索歌曲/专辑/歌手/歌词、播放/暂停/上一首/下一首/快进快退、一键下载、导航页面、设置音量、添加到我喜欢
+  - 一句话全自动操控：用户只需说一句话，AI 自动执行所有操作
+  - AI 聊天功能：支持自然语言对话
+  - 歌词总结功能
+  - 10 次免费对话（全局共享，不分 AI 模型），超出自动锁死，需管理员密码授权
+  - 所有 API 密钥和管理员密码加密存储，不可破译
+  - AI 入口：首页顶部 + 侧边菜单
+- **仓库迁移**：所有链接已更新至 `https://github.com/ZA12A230/lx-netease-music-mobile`
+- **开发者**：G佑
+#### 云构建
+- 支持 GitHub Actions 自动构建 APK 并发布 Release
+---
 ### 1.8.85
 #### 修复、优化
 - 同步上游代码

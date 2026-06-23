@@ -1,0 +1,108 @@
+name: Build & Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag (e.g. v1.8.86)'
+        required: true
+        default: 'v1.8.86'
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: |
+            platforms;android-34
+            build-tools;34.0.0
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Generate debug keystore (if not exists)
+        run: |
+          if [ ! -f android/app/debug.keystore ]; then
+            keytool -genkey -v -keystore android/app/debug.keystore \
+              -storepass android -alias androiddebugkey -keypass android \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
+      - name: Build Release APK
+        run: |
+          cd android
+          echo "MYAPP_UPLOAD_STORE_FILE=debug.keystore" > keystore.properties
+          echo "MYAPP_UPLOAD_STORE_PASSWORD=android" >> keystore.properties
+          echo "MYAPP_UPLOAD_KEY_ALIAS=androiddebugkey" >> keystore.properties
+          echo "MYAPP_UPLOAD_KEY_PASSWORD=android" >> keystore.properties
+          ./gradlew assembleRelease --no-daemon -PMYAPP_UPLOAD_STORE_FILE=debug.keystore -PMYAPP_UPLOAD_STORE_PASSWORD=android -PMYAPP_UPLOAD_KEY_ALIAS=androiddebugkey -PMYAPP_UPLOAD_KEY_PASSWORD=android
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lx-music-apk
+          path: android/app/build/outputs/apk/release/*.apk
+          retention-days: 30
+
+      - name: Get version from package.json
+        id: version
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Determine release tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          else
+            echo "TAG=${{ github.event.inputs.release_tag }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release and Upload APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.TAG }}
+          name: LX-N Music ${{ steps.tag.outputs.TAG }}
+          body: |
+            ## LX-N Music ${{ steps.tag.outputs.TAG }}
+
+            ### 更新内容
+            - 内置音源（5个音源自动导入）
+            - iOS 26 液态玻璃风格 UI
+            - AI 助手功能（支持科大讯飞、Kimi、千问、DeepSeek、OpenAI、Claude、豆包、Gemini、智谱等）
+            - 内置 3 个科大讯飞 AI（Spark Ultra-32K、Spark X X2、Spark X X1.5）
+            - AI 全自动操控软件（搜索/播放/下载/歌词/导航/播放控制）
+            - 10 次免费对话，超出需管理员密码授权
+            - 开发者：G佑
+
+            ### 下载
+            选择对应的 APK 文件下载安装即可。
+          files: |
+            android/app/build/outputs/apk/release/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
