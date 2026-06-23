@@ -12,7 +12,7 @@ export default memo(() => {
   const theme = useTheme()
   const t = useI18n()
   const openHomePage = () => {
-    void openUrl('https://github.com/souvenp/lx-netease-music-mobile#readme')
+    void openUrl('https://github.com/ZA12A230/lx-netease-music-mobile#readme')
   }
 
   const textLinkStyle = {
@@ -26,8 +26,13 @@ export default memo(() => {
       <View style={styles.part}>
         <Text style={styles.text}>本软件(LX-Netease Music简称LX-N Music)完全免费，代码已开源。开源地址：</Text>
         <TouchableOpacity onPress={openHomePage}>
-          <Text style={textLinkStyle}>https://github.com/souvenp/lx-netease-music-mobile</Text>
+          <Text style={textLinkStyle}>https://github.com/ZA12A230/lx-netease-music-mobile</Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.part}>
+        <Text style={styles.text}>
+          <Text style={styles.boldText}>开发者：G佑</Text>
+        </Text>
       </View>
       <View style={styles.part}>
         <Text style={styles.text}>

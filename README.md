@@ -3,9 +3,9 @@
 <h1 align="center">LX-N Music 移动版</h1>
 
 <p align="center">
-  <a href="https://github.com/souvenp/lx-netease-music-mobile/releases"><img src="https://img.shields.io/github/release/souvenp/lx-netease-music-mobile" alt="Release version"></a>
-  <a href="https://github.com/souvenp/lx-netease-music-mobile/actions/workflows/release.yml"><img src="https://github.com/souvenp/lx-netease-music-mobile/workflows/Build/badge.svg" alt="Build status"></a>
-  <a href="https://github.com/facebook/react-native"><img src="https://img.shields.io/github/package-json/dependency-version/souvenp/lx-netease-music-mobile/react-native/master" alt="React native version"></a>
+  <a href="https://github.com/ZA12A230/lx-netease-music-mobile/releases"><img src="https://img.shields.io/github/release/ZA12A230/lx-netease-music-mobile" alt="Release version"></a>
+  <a href="https://github.com/ZA12A230/lx-netease-music-mobile/actions/workflows/release.yml"><img src="https://github.com/ZA12A230/lx-netease-music-mobile/workflows/Build/badge.svg" alt="Build status"></a>
+  <a href="https://github.com/facebook/react-native"><img src="https://img.shields.io/github/package-json/dependency-version/ZA12A230/lx-netease-music-mobile/react-native/master" alt="React native version"></a>
 </p>
 
 <p align="center">一个基于 React Native 开发的音乐软件</p>

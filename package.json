@@ -26,21 +26,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/souvenp/lx-netease-music-mobile.git"
+    "url": "git+https://github.com/ZA12A230/lx-netease-music-mobile.git"
   },
   "keywords": [
     "music-player",
     "react-native-app"
   ],
   "author": {
-    "name": "souvenp",
+    "name": "G佑",
     "email": "lyswhut@qq.com"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/souvenp/lx-netease-music-mobile/issues"
+    "url": "https://github.com/ZA12A230/lx-netease-music-mobile/issues"
   },
-  "homepage": "https://github.com/souvenp/lx-netease-music-mobile#readme",
+  "homepage": "https://github.com/ZA12A230/lx-netease-music-mobile#readme",
   "dependencies": {
     "@craftzdog/react-native-buffer": "^6.0.5",
     "@d11/react-native-fast-image": "^8.13.0",

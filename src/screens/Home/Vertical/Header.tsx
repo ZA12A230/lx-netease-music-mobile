@@ -15,6 +15,7 @@ import { HEADER_HEIGHT } from '@/config/constant'
 import { type InitState as CommonState } from '@/store/common/state'
 import SearchTypeSelector from '@/screens/Home/Views/Search/SearchTypeSelector'
 import GlobalSearch from '@/components/GlobalSearch'
+import { AIButton } from '@/components/AIButton'
 import React, {useRef} from "react";
 
 const headerComponents: Partial<Record<CommonState['navActiveId'], React.ReactNode>> = {
@@ -73,6 +74,7 @@ const LeftHeader = () => {
         </TouchableOpacity>
       </View>
       {isSearchPage ? headerComponents[id] : <GlobalSearch />}
+      <AIButton />
 
       {/* <TouchableOpacity style={styles.btn} onPress={openSetting}>
         <Icon style={{ ...styles.btnText, color: theme['c-font'] }} name="setting" size={styles.btnText.fontSize} />
@@ -130,6 +132,7 @@ const RightHeader = () => {
       </View>
 
       {isSearchPage ? headerComponents[id] : <GlobalSearch />}
+      <AIButton />
       <TouchableOpacity style={styles.btn} onPress={openMenu}>
         <Icon color={theme['c-font']} name="menu" size={18} />
       </TouchableOpacity>

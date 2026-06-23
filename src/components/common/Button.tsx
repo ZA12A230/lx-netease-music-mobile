@@ -1,6 +1,7 @@
 import { useTheme } from '@/store/theme/hook'
 import { useMemo, useRef, useImperativeHandle, forwardRef } from 'react'
 import { Pressable, type PressableProps, StyleSheet, type View, type ViewProps } from 'react-native'
+import { createStyle } from '@/utils/tools'
 // import { AppColors } from '@/theme'
 
 export interface BtnProps extends PressableProps {
@@ -9,6 +10,7 @@ export interface BtnProps extends PressableProps {
   onChangeText?: (value: string) => void
   onClearText?: () => void
   children: React.ReactNode
+  glass?: boolean
 }
 
 export interface BtnType {
@@ -24,8 +26,21 @@ export interface BtnType {
   ) => void
 }
 
+const glassStyles = createStyle({
+  glass: {
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.35)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+})
+
 export default forwardRef<BtnType, BtnProps>(
-  ({ ripple: propsRipple = {}, disabled, children, style, ...props }, ref) => {
+  ({ ripple: propsRipple = {}, disabled, children, style, glass, ...props }, ref) => {
     const theme = useTheme()
     const btnRef = useRef<View>(null)
     const ripple = useMemo(
@@ -46,7 +61,14 @@ export default forwardRef<BtnType, BtnProps>(
       <Pressable
         android_ripple={ripple}
         disabled={disabled}
-        style={StyleSheet.compose({ opacity: disabled ? 0.3 : 1 }, style)}
+        style={
+          glass
+            ? StyleSheet.compose(
+                StyleSheet.compose({ opacity: disabled ? 0.3 : 1 }, glassStyles.glass),
+                style
+              )
+            : StyleSheet.compose({ opacity: disabled ? 0.3 : 1 }, style)
+        }
         {...props}
         ref={btnRef}
       >

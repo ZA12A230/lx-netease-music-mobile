@@ -10,6 +10,7 @@ import initCommonState from './common'
 import initUiMode from './uiMode'
 import { initDeeplink } from './deeplink'
 import { setApiSource } from '@/core/apiSource'
+import { importBuiltinSources } from '@/core/builtinSources'
 import commonActions from '@/store/common/action'
 import settingState from '@/store/setting/state'
 import { checkUpdate } from '@/core/version'
@@ -61,6 +62,20 @@ export default async () => {
     initUiMode(),
   ])
   bootLog('Theme, I18n, UserApi inited.')
+
+  // 导入内置音源（如果用户没有任何音源）
+  try {
+    const imported = await importBuiltinSources()
+    if (imported) {
+      // 如果导入了内置音源，自动激活第一个
+      const userApiState = (await import('@/store/userApi/state')).default
+      if (userApiState.list.length > 0 && !setting['common.apiSource']?.startsWith('user_api')) {
+        setting['common.apiSource'] = userApiState.list[0].id
+      }
+    }
+  } catch (err) {
+    bootLog('Builtin sources import skipped.')
+  }
 
   setApiSource(setting['common.apiSource'])
   bootLog('Api inited.')

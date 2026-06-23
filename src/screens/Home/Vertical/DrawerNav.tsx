@@ -19,6 +19,7 @@ import { useMyList } from '@/store/list/hook';
 import { setActiveList } from '@/core/list';
 import { navigations } from "@/navigation";
 import commonState from '@/store/common/state';
+import { openAIAssistant } from '@/components/AIButton'
 
 const CollapsibleMyListItem = () => {
   const t = useI18n();
@@ -263,6 +264,10 @@ export default memo(() => {
     global.app_event.changeMenuVisible(false);
     setNavActiveId('nav_play_history');
   };
+  const handleAIPress = () => {
+    global.app_event.changeMenuVisible(false);
+    openAIAssistant();
+  };
   const filteredNavMenus = useMemo(() => {
     return NAV_MENUS.filter(
       menu => menu.id !== 'nav_play_history' && (menu.id === 'nav_search' || menu.id === 'nav_setting' || (navStatus[menu.id] ?? true))
@@ -286,6 +291,9 @@ export default memo(() => {
       </ScrollView>
 
       <View style={styles.footer}>
+        <TouchableOpacity style={styles.footerBtn} onPress={handleAIPress}>
+          <Text size={14} color={theme['c-font-label']}>AI</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.footerBtn} onPress={handleHistoryPress}>
           <Icon name="music_time" size={25} color={theme['c-font-label']} />
         </TouchableOpacity>
