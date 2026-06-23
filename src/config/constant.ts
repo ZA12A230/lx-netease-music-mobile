@@ -118,6 +118,7 @@ export const NAV_MENUS = [
   { id: 'nav_subscribed_albums', icon: 'svg:album-disc' },
   { id: 'nav_my_playlist', icon: 'album' },
   { id: 'nav_onedrive', icon: 'svg:onedrive' },
+  { id: 'nav_music_assistant', icon: 'svg:music-assistant' },
   // { id: 'download', icon: 'download-2' },
   { id: 'nav_setting', icon: 'setting' },
 ] as const

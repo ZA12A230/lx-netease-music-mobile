@@ -106,7 +106,13 @@ export const xunfeiChat = (
           if (!resolved) {
             resolved = true
             try { ws.close() } catch {}
-            reject(new Error(`科大讯飞错误[${code}]: ${data.header?.message || '未知错误'}`))
+            let errMsg = data.header?.message || '未知错误'
+            if (code === 10000 || code === 10001 || code === 10002 || errMsg.includes('鉴权') || errMsg.includes('auth') || errMsg.includes('401')) {
+              errMsg = `鉴权失败（错误码 ${code}）：${errMsg}\n\n可能的原因：\n1. 内置服务配额已用完\n2. 服务密钥已过期\n\n建议：点击右上角设置按钮，切换到其他AI服务（如Kimi、通义千问等）并配置自己的API Key`
+            } else {
+              errMsg = `音乐助手错误[${code}]: ${errMsg}`
+            }
+            reject(new Error(errMsg))
           }
           return
         }
@@ -139,7 +145,11 @@ export const xunfeiChat = (
       clearTimeout(timeout)
       if (!resolved) {
         resolved = true
-        reject(new Error('WebSocket连接失败'))
+        let errMsg = 'WebSocket连接失败'
+        if (err?.message?.includes('401') || err?.status === 401) {
+          errMsg = `鉴权失败（401）：内置服务可能已过期\n\n建议：点击右上角设置按钮，切换到其他AI服务（如Kimi、通义千问等）并配置自己的API Key`
+        }
+        reject(new Error(errMsg))
       }
     }
 

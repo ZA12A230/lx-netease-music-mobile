@@ -600,6 +600,7 @@
   "artist_detail": "Artist Detail",
   "album_detail": "Album Detail",
   "nav_my_playlist": "My Playlists",
+  "nav_music_assistant": "Music Assistant",
   "exit_app_tip_double_press": "Press back again to exit",
   "setting_basic_nav_menu": "Menu Display Settings"
 }

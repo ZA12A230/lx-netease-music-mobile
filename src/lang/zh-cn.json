@@ -605,6 +605,7 @@
   "artist_detail": "歌手详情",
   "album_detail": "专辑详情",
   "nav_my_playlist": "我的歌单",
+  "nav_music_assistant": "音乐助手",
   "exit_app_tip_double_press": "再按一次退出应用",
   "setting_basic_nav_menu": "菜单显示设置"
 }

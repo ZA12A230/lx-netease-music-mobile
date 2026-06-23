@@ -97,6 +97,19 @@ const HeartbeatIcon = ({ size, color }: { size: number; color: string }) => (
   </Svg>
 )
 
+const MusicAssistantIcon = ({ size, color }: { size: number; color: string }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M12 2L14.5 9H22L16 13.5L18.5 21L12 16.5L5.5 21L8 13.5L2 9H9.5L12 2Z"
+      stroke={color}
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+  </Svg>
+)
+
 export const SvgIcon = memo(({ name, size = 15, rawSize, color = '#000' }: SvgIconProps) => {
   const finalSize = rawSize ?? scaleSizeW(size)
 
@@ -111,6 +124,8 @@ export const SvgIcon = memo(({ name, size = 15, rawSize, color = '#000' }: SvgIc
       return <OneDriveIcon size={finalSize} color={color} />
     case 'heartbeat':
       return <HeartbeatIcon size={finalSize} color={color} />
+    case 'music-assistant':
+      return <MusicAssistantIcon size={finalSize} color={color} />
     default:
       return null
   }

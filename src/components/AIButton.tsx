@@ -1,35 +1,19 @@
 /**
- * AI 助手入口按钮
- * 点击后打开 AI 助手页面
+ * 音乐助手入口按钮
+ * 点击后跳转到音乐助手页面
  */
 import { memo } from 'react'
-import { Navigation } from 'react-native-navigation'
 
 import Button from '@/components/common/Button'
 import Text from '@/components/common/Text'
 import { useTheme } from '@/store/theme/hook'
 import { createStyle } from '@/utils/tools'
-import { AI_ASSISTANT_SCREEN } from '@/navigation/screenNames'
+import { setNavActiveId } from '@/core/common'
 import { initAiService } from '@/core/ai'
 
-export const openAIAssistant = () => {
-  // 确保 AI 服务已初始化
+export const openMusicAssistant = () => {
   void initAiService()
-  Navigation.showModal({
-    stack: {
-      children: [
-        {
-          component: {
-            name: AI_ASSISTANT_SCREEN,
-            options: {
-              topBar: { visible: false },
-              statusBar: { visible: false },
-            },
-          },
-        },
-      ],
-    },
-  })
+  setNavActiveId('nav_music_assistant')
 }
 
 interface AIButtonProps {
@@ -40,7 +24,7 @@ export const AIButton = memo(({ style }: AIButtonProps) => {
   const theme = useTheme()
   return (
     <Button
-      onPress={openAIAssistant}
+      onPress={openMusicAssistant}
       style={[
         styles.button,
         { backgroundColor: theme['c-button-background'] },
@@ -48,7 +32,7 @@ export const AIButton = memo(({ style }: AIButtonProps) => {
       ]}
     >
       <Text size={13} color={theme['c-button-font']}>
-        AI
+        助手
       </Text>
     </Button>
   )

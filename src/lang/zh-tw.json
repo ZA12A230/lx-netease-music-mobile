@@ -571,6 +571,7 @@
   "artist_detail": "歌手詳情",
   "album_detail": "專輯詳情",
   "nav_my_playlist": "我的歌單",
+  "nav_music_assistant": "音樂助手",
   "setting_download_path": "下載路徑",
   "setting_download_path_label": "目前路徑：{path}",
   "setting_download_path_select": "選取路徑",

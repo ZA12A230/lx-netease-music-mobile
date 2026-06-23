@@ -1,16 +1,19 @@
 // @ts-nocheck
 import { useState, useRef, useCallback, useEffect, memo } from 'react'
 import { View, TextInput, FlatList, KeyboardAvoidingView, Platform, ActivityIndicator, Modal, Alert, ScrollView } from 'react-native'
-import { Navigation } from 'react-native-navigation'
 
 import Button from '@/components/common/Button'
 import Text from '@/components/common/Text'
 import { Icon } from '@/components/common/Icon'
 import { useTheme } from '@/store/theme/hook'
 import { createStyle } from '@/utils/tools'
-import { chat, getActiveServiceId, setActiveService, getPresetServices, getUserApiKey, setUserApiKey, summarizeLyrics } from '@/core/ai'
+import { chat, getActiveServiceId, setActiveService, getPresetServices, getUserApiKey, setUserApiKey, summarizeLyrics, initAiService } from '@/core/ai'
 import { checkQuota, authorize, getRemainingQuota, isAuthorized } from '@/core/ai/quota'
 import type { ChatMessage as AIChatMessage } from '@/core/ai/providers/xunfei'
+import { useI18n } from '@/lang'
+import { useStatusbarHeight } from '@/store/common/hook'
+import { scaleSizeH } from '@/utils/pixelRatio'
+import { HEADER_HEIGHT } from '@/config/constant'
 
 interface Message {
   id: string
@@ -19,13 +22,15 @@ interface Message {
   loading?: boolean
 }
 
-const AIAssistant = ({ componentId }: { componentId: string }) => {
+const MusicAssistant = () => {
   const theme = useTheme()
+  const t = useI18n()
+  const statusBarHeight = useStatusbarHeight()
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
       role: 'assistant',
-      content: '你好！我是LX-N Music的AI助手🎵\n你可以对我说：\n• "播放周杰伦的晴天"\n• "下载夜曲"\n• "搜索张学友的歌"\n• "这首歌的歌词是什么"\n• "总结一下歌词"\n\n有什么可以帮你的吗？',
+      content: '你好！我是LX-N Music的音乐助手🎵\n你可以对我说：\n• "播放周杰伦的晴天"\n• "下载夜曲"\n• "搜索张学友的歌"\n• "这首歌的歌词是什么"\n• "总结一下歌词"\n\n有什么可以帮你的吗？',
     },
   ])
   const [input, setInput] = useState('')
@@ -45,12 +50,9 @@ const AIAssistant = ({ componentId }: { componentId: string }) => {
   }, [])
 
   useEffect(() => {
+    void initAiService()
     refreshQuota()
   }, [refreshQuota])
-
-  const handleClose = () => {
-    Navigation.dismissModal(componentId)
-  }
 
   const handleSend = async () => {
     const text = input.trim()
@@ -159,13 +161,20 @@ const AIAssistant = ({ componentId }: { componentId: string }) => {
   return (
     <View style={[styles.container, { backgroundColor: theme['c-content-background'] }]}>
       {/* 顶部栏 */}
-      <View style={[styles.header, { backgroundColor: theme['c-primary-light-100-alpha-400'], borderColor: 'rgba(255,255,255,0.2)' }]}>
-        <Button onPress={handleClose} style={styles.headerBtn}>
-          <Icon name="back" color={theme['c-font']} size={18} />
-        </Button>
-        <Text style={styles.headerTitle} size={18} color={theme['c-font']}>
-          AI 助手
-        </Text>
+      <View style={[
+        styles.header,
+        {
+          backgroundColor: theme['c-primary-light-100-alpha-400'],
+          borderColor: 'rgba(255,255,255,0.2)',
+          paddingTop: statusBarHeight,
+          height: scaleSizeH(HEADER_HEIGHT) + statusBarHeight,
+        },
+      ]}>
+        <View style={styles.headerLeft}>
+          <Text style={styles.headerTitle} size={18} color={theme['c-font']}>
+            {t('nav_music_assistant')}
+          </Text>
+        </View>
         <Button onPress={() => setShowSettings(true)} style={styles.headerBtn}>
           <Icon name="setting" color={theme['c-font']} size={18} />
         </Button>
@@ -294,7 +303,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
     <View style={styles.settingsOverlay}>
       <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'] }]}>
         <View style={styles.settingsHeader}>
-          <Text size={18} color={theme['c-font']}>AI 服务设置</Text>
+          <Text size={18} color={theme['c-font']}>音乐助手设置</Text>
           <Button onPress={onClose} style={styles.headerBtn}>
             <Text color={theme['c-font']}>✕</Text>
           </Button>
@@ -372,13 +381,17 @@ const styles = createStyle({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 48,
-    paddingBottom: 12,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
   },
+  headerLeft: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: '100%',
+  },
   headerBtn: { padding: 8, borderRadius: 18 },
-  headerTitle: { fontWeight: 'bold' },
+  headerTitle: { fontWeight: 'bold', paddingLeft: 5 },
   quotaBar: { paddingVertical: 6, paddingHorizontal: 15, alignItems: 'center' },
   msgList: { padding: 15, paddingBottom: 80 },
   msgRow: { marginVertical: 6, flexDirection: 'row' },
@@ -495,4 +508,4 @@ const styles = createStyle({
   authSection: { marginTop: 10, marginBottom: 20 },
 })
 
-export default AIAssistant
+export default MusicAssistant
