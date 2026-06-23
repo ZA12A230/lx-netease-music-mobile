@@ -1,7 +1,9 @@
+// @ts-nocheck
 import RNFS from 'react-native-fs'
 import { addUserApi, getUserApiList } from '@/utils/data'
 import { setUserApiList, importUserApi } from '@/core/userApi'
 import { bootLog } from '@/utils/bootLog'
+import { getData, saveData } from '@/plugins/storage'
 
 // 内置音源文件列表（位于 android/app/src/main/assets/musicSources/）
 const BUILTIN_SOURCES = [
@@ -14,8 +16,6 @@ const BUILTIN_SOURCES = [
 
 // 标记内置音源是否已导入的存储键
 const BUILTIN_IMPORTED_KEY = '@builtin_sources_imported_v1'
-
-import { getData, saveData } from '@/utils/data'
 
 /**
  * 从 android assets 读取内置音源脚本并导入

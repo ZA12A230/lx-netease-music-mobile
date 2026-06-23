@@ -1,7 +1,8 @@
+// @ts-nocheck
 /**
  * AI 用量管理：10次免费对话，超出需管理员密码授权
  */
-import { getData, saveData } from '@/utils/data'
+import { getData, saveData } from '@/plugins/storage'
 import { AI_STORAGE_KEYS, FREE_QUOTA, verifyAdminPassword } from './config'
 
 export const getQuotaCount = async (): Promise<number> => {

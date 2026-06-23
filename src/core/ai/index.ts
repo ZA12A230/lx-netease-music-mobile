@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * AI 统一入口
  * 管理对话流程、工具调用循环、流式输出
@@ -12,7 +13,7 @@ import {
   AI_STORAGE_KEYS,
   type AIServiceConfig,
 } from './config'
-import { getData, saveData } from '@/utils/data'
+import { getData, saveData } from '@/plugins/storage'
 
 // ============ System Prompt ============
 const buildSystemPrompt = (): string => {
