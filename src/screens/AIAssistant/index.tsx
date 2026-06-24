@@ -8,6 +8,7 @@ import {
   View, TextInput, FlatList, KeyboardAvoidingView, Platform,
   ActivityIndicator, Modal, Alert, ScrollView, TouchableOpacity,
   Animated, Easing, Text as RNText, PermissionsAndroid, Platform as RNPlatform,
+  StyleSheet,
 } from 'react-native'
 
 import Button from '@/components/common/Button'
@@ -930,5 +931,4 @@ const styles = createStyle({
   },
 })
 
-import { StyleSheet } from 'react-native'
 export default MusicAssistant
