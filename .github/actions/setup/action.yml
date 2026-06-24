@@ -34,3 +34,15 @@ runs:
     - name: Install dependencies
       shell: bash
       run: npm ci
+
+    - name: Patch gradle-plugin (disable warnings-as-errors)
+      shell: bash
+      run: |
+        # React Native gradle-plugin 默认把警告当错误，CI 环境下会编译失败，关闭它
+        PLUGIN_FILE="node_modules/@react-native/gradle-plugin/build.gradle.kts"
+        if [ -f "$PLUGIN_FILE" ]; then
+          sed -i 's/allWarningsAsErrors\s*=\s*true/allWarningsAsErrors = false/g' "$PLUGIN_FILE"
+          echo "Patched $PLUGIN_FILE -> allWarningsAsErrors = false"
+        else
+          echo "gradle-plugin build.gradle.kts not found, skipping patch"
+        fi
