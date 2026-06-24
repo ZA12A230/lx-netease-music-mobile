@@ -1,4 +1,4 @@
-name: Build
+name: Build and Release APK
 
 on:
   push:
@@ -7,12 +7,13 @@ on:
 
 jobs:
   Android:
-    name: Android
+    name: Build Android APK
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
       contents: write
     outputs:
-      package_version: ${{ steps.package_version.outputs.package_version }}
+      package_version: ${{ steps.get_version.outputs.package_version }}
       release_tag: ${{ steps.release_target.outputs.release_tag }}
       release_name: ${{ steps.release_target.outputs.release_name }}
       release_prerelease: ${{ steps.release_target.outputs.release_prerelease }}
@@ -23,24 +24,14 @@ jobs:
       - name: Setup Env
         uses: ./.github/actions/setup
 
-      - name: Build Packages
-        env:
-          DISABLE_SVG: 1
-        shell: bash
-        run: |
-          cd android
-          echo ${{ secrets.MYAPP_KEYSTORE_BASE64 }} | base64 --decode > app/${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
-          chmod +x ./gradlew
-          ./gradlew assembleRelease -PMYAPP_UPLOAD_STORE_FILE='${{ secrets.MYAPP_UPLOAD_STORE_FILE }}' -PMYAPP_UPLOAD_KEY_ALIAS='${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}' -PMYAPP_UPLOAD_STORE_PASSWORD='${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}' -PMYAPP_UPLOAD_KEY_PASSWORD='${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}'
-          rm -f app/${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
-
       - name: Get package version
-        id: package_version
+        id: get_version
         shell: bash
         run: |
           PACKAGE_VERSION=$(node -p -e 'require("./package.json").version')
           echo "PACKAGE_VERSION=${PACKAGE_VERSION}" >> "$GITHUB_ENV"
           echo "package_version=${PACKAGE_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Package version: ${PACKAGE_VERSION}"
 
       - name: Resolve release target
         id: release_target
@@ -50,8 +41,8 @@ jobs:
         run: |
           BASE_TAG="v${PACKAGE_VERSION}"
           if gh release view "${BASE_TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
-            RELEASE_TAG="${BASE_TAG}-test.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
-            RELEASE_NAME="${BASE_TAG} test ${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}"
+            RELEASE_TAG="${BASE_TAG}-build.${GITHUB_RUN_NUMBER}"
+            RELEASE_NAME="${BASE_TAG} Build ${GITHUB_RUN_NUMBER}"
             RELEASE_PRERELEASE="true"
           else
             RELEASE_TAG="${BASE_TAG}"
@@ -65,6 +56,58 @@ jobs:
           echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
           echo "release_name=${RELEASE_NAME}" >> "$GITHUB_OUTPUT"
           echo "release_prerelease=${RELEASE_PRERELEASE}" >> "$GITHUB_OUTPUT"
+          echo "Release tag: ${RELEASE_TAG}"
+          echo "Release name: ${RELEASE_NAME}"
+          echo "Prerelease: ${RELEASE_PRERELEASE}"
+
+      - name: Patch gradle-plugin for Kotlin Werror
+        shell: bash
+        run: |
+          if [ -f "node_modules/@react-native/gradle-plugin/build.gradle.kts" ]; then
+            sed -i 's/allWarningsAsErrors = true/allWarningsAsErrors = false/' node_modules/@react-native/gradle-plugin/build.gradle.kts
+            echo "Patched @react-native/gradle-plugin to disable allWarningsAsErrors"
+          else
+            echo "gradle-plugin build.gradle.kts not found, skipping patch"
+          fi
+
+      - name: Build APK
+        env:
+          DISABLE_SVG: 1
+        shell: bash
+        run: |
+          cd android
+          chmod +x ./gradlew
+
+          if [ -n "${{ secrets.MYAPP_KEYSTORE_BASE64 }}" ] && [ -n "${{ secrets.MYAPP_UPLOAD_STORE_FILE }}" ]; then
+            echo "Using release keystore..."
+            echo "${{ secrets.MYAPP_KEYSTORE_BASE64 }}" | base64 --decode > app/${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
+            ./gradlew assembleRelease \
+              -PMYAPP_UPLOAD_STORE_FILE='${{ secrets.MYAPP_UPLOAD_STORE_FILE }}' \
+              -PMYAPP_UPLOAD_KEY_ALIAS='${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}' \
+              -PMYAPP_UPLOAD_STORE_PASSWORD='${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}' \
+              -PMYAPP_UPLOAD_KEY_PASSWORD='${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}'
+            rm -f app/${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
+          else
+            echo "No keystore secrets configured, building with debug signing..."
+            ./gradlew assembleRelease
+          fi
+
+      - name: Verify APK files
+        shell: bash
+        run: |
+          echo "Listing APK files:"
+          ls -la android/app/build/outputs/apk/release/*.apk
+          echo "---"
+          echo "Generating MD5 checksums:"
+          cd android/app/build/outputs/apk/release
+          md5sum *.apk
+
+      - name: Upload APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-files
+          path: android/app/build/outputs/apk/release/*.apk
+          retention-days: 30
 
       - name: Create git tag
         shell: bash
@@ -76,21 +119,11 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git tag "${RELEASE_TAG}" "${GITHUB_SHA}"
             git push origin "refs/tags/${RELEASE_TAG}"
+            echo "Tag ${RELEASE_TAG} created and pushed."
           fi
 
-      - name: Generate file MD5
-        run: |
-          cd android/app/build/outputs/apk/release
-          md5sum *.apk
-
-      - name: Upload Artifact
-        uses: ./.github/actions/upload-artifact
-        env:
-          PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
-
-
   Release:
-    name: Release
+    name: Release to GitHub
     runs-on: ubuntu-latest
     needs: [Android]
     permissions:
@@ -99,26 +132,40 @@ jobs:
       - name: Check out git repository
         uses: actions/checkout@v4
 
-      - name: Download Artifacts
+      - name: Download APK artifacts
         uses: actions/download-artifact@v4
         with:
+          name: apk-files
           path: ./artifacts
-          merge-multiple: true
 
-      - name: Generate release body
+      - name: List downloaded files
+        shell: bash
         run: |
-          awk 'BEGIN{RS="---"}{if(NR==1)print $0}' ./publish/changeLog.md > RELEASE_NOTES.md
-          if [ "${{ needs.Android.outputs.release_prerelease }}" = "true" ]; then
-            echo -e '\n### Test Build\nThis prerelease was generated because release `${{ needs.Android.outputs.package_version }}` already exists.\n' >> RELEASE_NOTES.md
+          echo "Downloaded files:"
+          ls -la ./artifacts/
+
+      - name: Generate release notes
+        shell: bash
+        run: |
+          if [ -f "./publish/changeLog.md" ]; then
+            awk 'BEGIN{RS="---"}{if(NR==1)print $0}' ./publish/changeLog.md > RELEASE_NOTES.md
+          else
+            echo "# Release ${{ needs.Android.outputs.release_tag }}" > RELEASE_NOTES.md
           fi
+
+          if [ "${{ needs.Android.outputs.release_prerelease }}" = "true" ]; then
+            echo -e '\n### Test Build\nThis is a test build generated by CI.\n' >> RELEASE_NOTES.md
+          fi
+
           echo -e '\n### File MD5\n```' >> RELEASE_NOTES.md
           cd artifacts
           md5sum *.apk >> ../RELEASE_NOTES.md
           cd ..
           echo -e '```\n' >> RELEASE_NOTES.md
-          echo -e '\n[软件安装包说明](https://lyswhut.github.io/lx-music-doc/download#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8C%85%E8%AF%B4%E6%98%8E)\n' >> RELEASE_NOTES.md
 
-      - name: Release
+          cat RELEASE_NOTES.md
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ needs.Android.outputs.release_name }}
@@ -127,10 +174,6 @@ jobs:
           draft: false
           tag_name: ${{ needs.Android.outputs.release_tag }}
           files: |
-            artifacts/lx-netease-music-mobile-v${{ needs.Android.outputs.package_version }}-arm64-v8a.apk
-            artifacts/lx-netease-music-mobile-v${{ needs.Android.outputs.package_version }}-armeabi-v7a.apk
-            artifacts/lx-netease-music-mobile-v${{ needs.Android.outputs.package_version }}-x86_64.apk
-            artifacts/lx-netease-music-mobile-v${{ needs.Android.outputs.package_version }}-x86.apk
-            artifacts/lx-netease-music-mobile-v${{ needs.Android.outputs.package_version }}-universal.apk
+            artifacts/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
