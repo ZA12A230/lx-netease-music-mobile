@@ -23,19 +23,25 @@ const urlencode = (str: string): string => {
  */
 const buildAuthUrl = (): string => {
   const config = getXunfeiConfig()
-  const url = new URL(config.wssUrl)
-  const host = url.host
-  const path = url.pathname || '/'
-  // RFC1123 格式日期
+  const wssUrl = config.wssUrl
+  
+  const urlMatch = wssUrl.match(/^(wss?):\/\/([^/:]+)(?::(\d+))?(\/.*)?$/)
+  if (!urlMatch) {
+    throw new Error('Invalid WSS URL')
+  }
+  
+  const [, protocol, host, , path] = urlMatch
+  const effectivePath = path || '/'
+  
   const date = new Date().toUTCString()
 
-  const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${path} HTTP/1.1`
+  const signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${effectivePath} HTTP/1.1`
   const signature = bytesToBase64(hmacSha256(strToBytes(config.apiSecret), strToBytes(signatureOrigin)))
 
   const authorizationOrigin = `api_key="${config.apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`
   const authorization = bytesToBase64(strToBytes(authorizationOrigin))
 
-  return `${config.wssUrl}?authorization=${urlencode(authorization)}&date=${urlencode(date)}&host=${urlencode(host)}`
+  return `${wssUrl}?authorization=${urlencode(authorization)}&date=${urlencode(date)}&host=${urlencode(host)}`
 }
 
 /**

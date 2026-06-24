@@ -13,17 +13,54 @@ const _ENC_WSS_URL = [45, 79, 12, 33, 177, 109, 30, 245, 59, 78, 20, 54, 255, 50
 // 管理员密码（加密存储）
 const _ENC_ADMIN_PWD = [48, 69, 77, 43, 175, 115, 93, 178, 107, 15]
 
+// 内置科大讯飞配置（运行时解密）
+const INTERNAL_XUNFEI_CONFIG = {
+  appid: decrypt(_ENC_APPID),
+  apiSecret: decrypt(_ENC_API_SECRET),
+  apiKey: decrypt(_ENC_API_KEY),
+  wssUrl: decrypt(_ENC_WSS_URL),
+}
+
 /**
- * 获取内置科大讯飞配置（运行时解密）
+ * 获取科大讯飞配置（优先使用用户自定义配置，否则使用内置配置）
  */
 export const getXunfeiConfig = () => {
+  const userConfig = getUserXunfeiConfig()
+  if (userConfig.appid && userConfig.apiKey && userConfig.apiSecret) {
+    return {
+      ...INTERNAL_XUNFEI_CONFIG,
+      ...userConfig,
+    }
+  }
   return {
-    appid: decrypt(_ENC_APPID),
-    apiSecret: decrypt(_ENC_API_SECRET),
-    apiKey: decrypt(_ENC_API_KEY),
-    wssUrl: decrypt(_ENC_WSS_URL),
+    ...INTERNAL_XUNFEI_CONFIG,
     model: '4.0Ultra',
   }
+}
+
+// 用户自定义科大讯飞配置存储键
+export const XUNFEI_USER_CONFIG_KEY = '@xunfei_user_config'
+
+/**
+ * 获取用户自定义科大讯飞配置
+ */
+export const getUserXunfeiConfig = (): { appid: string; apiKey: string; apiSecret: string; wssUrl: string; model: string } => {
+  try {
+    const stored = localStorage.getItem(XUNFEI_USER_CONFIG_KEY)
+    if (stored) {
+      return JSON.parse(stored)
+    }
+  } catch {
+    // ignore
+  }
+  return { appid: '', apiKey: '', apiSecret: '', wssUrl: '', model: '' }
+}
+
+/**
+ * 保存用户自定义科大讯飞配置
+ */
+export const setUserXunfeiConfig = (config: { appid: string; apiKey: string; apiSecret: string; wssUrl: string; model: string }) => {
+  localStorage.setItem(XUNFEI_USER_CONFIG_KEY, JSON.stringify(config))
 }
 
 /**
@@ -62,6 +99,13 @@ export const PRESET_SERVICES: AIServiceConfig[] = [
     type: 'xunfei',
     model: '4.0Ultra',
     builtin: true,
+  },
+  {
+    id: 'xunfei_custom',
+    name: '科大讯飞(自定义)',
+    type: 'xunfei',
+    model: '4.0Ultra',
+    builtin: false,
   },
   {
     id: 'kimi',
@@ -144,3 +188,10 @@ export const AI_STORAGE_KEYS = {
   chatHistory: '@ai_chat_history_v1',
   userApiKeys: '@ai_user_apikeys_v1',
 }
+
+// 科大讯飞可用模型列表
+export const XUNFEI_MODELS = [
+  { id: '4.0Ultra', name: '讯飞 Ultra-32K', desc: '精选AI' },
+  { id: '3.5', name: '讯飞 X2', desc: '差一' },
+  { id: '3.0', name: '讯飞 X1.5', desc: '差一' },
+]
