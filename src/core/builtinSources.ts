@@ -7,11 +7,16 @@ import { getData, saveData } from '@/plugins/storage'
 
 // 内置音源文件列表（位于 android/app/src/main/assets/musicSources/）
 const BUILTIN_SOURCES = [
-  'musicSources/yecao.js',
+  'musicSources/野草v1.js',
+  'musicSources/野花v1.js',
   'musicSources/sixyin-music-source-v1.1.0.js',
   'musicSources/小熊猫v1.1.1.js',
   'musicSources/梓澄音源_v1.2.3.4.5.js',
   'musicSources/Huibq音源_v1.2.0.js',
+  'musicSources/ikun公益音源v103.js',
+  'musicSources/ikun音源（中国香港服务器）v1.0.1.js',
+  'musicSources/無名v0.0.3.js',
+  'musicSources/肥猫不肥.js',
 ]
 
 // 标记内置音源是否已导入的存储键
