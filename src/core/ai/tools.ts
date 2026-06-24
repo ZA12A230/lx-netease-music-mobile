@@ -150,6 +150,16 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
       required: ['commands'],
     },
   },
+  {
+    name: 'shazam',
+    description: '听歌识曲：录制周围音乐并识别歌曲名称和歌手。使用前请告知用户需要麦克风权限。',
+    parameters: {
+      type: 'object',
+      properties: {
+        duration: { type: 'number', description: '录音时长（秒），默认5秒' },
+      },
+    },
+  },
 ]
 
 // ============ 工具执行函数 ============
@@ -200,12 +210,27 @@ export const toolPlayMusic = async (keyword: string): Promise<string> => {
     }
     if (!targetSong) return `未找到与"${keyword}"匹配的歌曲，无法播放。`
 
-    // 动态导入 player action 播放
+    // 获取当前播放状态
+    const playerState = (await import('@/store/player/state')).default
+    const wasPlaying = playerState.isPlay
+    const hadMusic = !!playerState.playMusicInfo?.musicInfo
+
+    // 添加到临时播放列表（isTop=true 插入队列头部）
     playerAction.addTempPlayList([{
       musicInfo: targetSong,
       listId: null,
       isTop: true,
     }])
+
+    // 强制触发播放：先确保切到新歌，再播放
+    const { play, playNext } = await import('@/core/player/player')
+    if (hadMusic) {
+      // 已有歌曲在播放，直接切换到下一首（临时列表顶部就是这首歌）
+      await playNext(false)
+      // 如果之前在播放则恢复播放
+      if (wasPlaying) play()
+    }
+    // 如果之前没有歌曲，addTempPlayList 已自动调用 playNext
 
     return `正在播放：《${targetSong.name}》- ${targetSong.singer}（音源：${targetSource}）`
   } catch (err: any) {
@@ -421,6 +446,26 @@ export const toolSearchArtist = async (keyword: string): Promise<string> => {
 }
 
 /**
+ * 听歌识曲（Shazam）
+ */
+export const toolShazam = async (duration: number = 5): Promise<string> => {
+  try {
+    const { recognizeFromMic } = await import('@/core/shazam')
+    const result = await recognizeFromMic(duration)
+    if (result) {
+      return `识别成功！\n\n歌曲：《${result.title}》\n歌手：${result.artist}\n\n需要我播放这首歌吗？`
+    } else {
+      return '未能识别到歌曲，可能环境太嘈杂或歌曲不在 Shazam 曲库中，请重试。'
+    }
+  } catch (err: any) {
+    if (err.message?.includes('未安装音频录制库') || err.message?.includes('PERMISSION_DENIED')) {
+      return '听歌识曲需要麦克风权限，请在设置中授予麦克风权限后重试。'
+    }
+    return `识别失败：${err.message}`
+  }
+}
+
+/**
  * 添加到我喜欢
  */
 export const toolAddToLove = async (keyword?: string): Promise<string> => {
@@ -496,6 +541,8 @@ export const executeTool = async (toolName: string, args: any): Promise<string> 
       return toolSearchArtist(args.keyword)
     case 'add_to_love':
       return toolAddToLove(args.keyword)
+    case 'shazam':
+      return toolShazam(args.duration || 5)
     case 'execute_sequence':
       return toolExecuteSequence(args.commands || [])
     default:
