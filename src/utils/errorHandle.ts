@@ -10,15 +10,17 @@ const errorHandler = (e: Error, isFatal: boolean) => {
   ]
   if (isFatal) {
     if (excludedErrors.some((excludedError) => e.message.includes(excludedError))) {
-      toast('应用遇到了错误，如果你有固定的重现方式，请截图并在 GitHub 反馈（并附上刚才你进行了什么操作，以及“设置-错误日志”的内容）')
+      toast('应用遇到了错误，如果你有固定的重现方式，请截图并在 GitHub 反馈（并附上刚才你进行了什么操作，以及"设置-错误日志"的内容）')
     } else {
       Alert.alert(
         '💥Unexpected error occurred💥',
         `
-  应用出 bug 了😭，以下是错误异常信息。请截图并在 GitHub 反馈（并附上刚才你进行了什么操作，以及附上“设置-错误日志”的内容）。现在应用可能会出现异常，若出现异常请尝试强制结束应用后重新启动！
+  应用出 bug 了😭，以下是错误异常信息。请截图并在 GitHub 反馈（并附上刚才你进行了什么操作，以及附上"设置-错误日志"的内容）。现在应用可能会出现异常，若出现异常请尝试强制结束应用后重新启动！
 
   Error:
   ${isFatal ? 'Fatal:' : ''} ${e.name} ${e.message}
+
+  ${e.stack ? `Stack:\n${e.stack}` : ''}
   `,
         [{
           text: '关闭 (Close)',
@@ -29,7 +31,7 @@ const errorHandler = (e: Error, isFatal: boolean) => {
       )
     }
   }
-  log.error(e.stack)
+  log.error(e.stack || e.message)
 }
 
 if (process.env.NODE_ENV !== 'development') {
