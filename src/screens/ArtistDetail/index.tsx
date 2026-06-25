@@ -10,12 +10,12 @@ import PlayerBar from '@/components/player/PlayerBar';
 import { createStyle } from '@/utils/tools';
 import { getArtistCache, setArtistCache,
   clearArtistCache, getArtistDetailCache, setArtistDetailCache } from '@/core/cache';
-import {useSettingValue} from "@/store/setting/hook.ts";
+import {useSettingValue} from "@/store/setting/hook";
 import playerState from '@/store/player/state'
 import listState from '@/store/list/state'
 import { LIST_IDS } from '@/config/constant'
 import { type OnlineListType } from '@/components/OnlineList'
-import {usePlayerMusicInfo} from "@/store/player/hook.ts";
+import {usePlayerMusicInfo} from "@/store/player/hook";
 
 const SONG_LIMIT = 100;
 const ALBUM_LIMIT = 100;

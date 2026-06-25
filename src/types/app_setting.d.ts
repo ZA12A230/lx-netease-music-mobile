@@ -1,5 +1,5 @@
 import type { I18n } from '@/lang/i18n'
-import {NAV_ID_Type} from "@/config/constant.ts";
+import {NAV_ID_Type} from "@/config/constant";
 
 declare global {
   namespace LX {

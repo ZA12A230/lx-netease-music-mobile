@@ -9,7 +9,7 @@ import { useStatusbarHeight } from '@/store/common/hook';
 import { Icon } from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { toast } from '@/utils/tools';
-import theme from "@/core/init/theme.ts";
+import theme from "@/core/init/theme";
 
 // [+] 修改登录地址为 YouTube Music
 const LOGIN_URL = 'https://music.youtube.com/';

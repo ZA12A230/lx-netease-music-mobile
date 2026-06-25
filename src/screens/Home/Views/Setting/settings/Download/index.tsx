@@ -10,8 +10,8 @@ import IsWriteCover from './IsWriteCover'
 import FileNameFormat from './FileNameFormat'
 import { useI18n } from '@/lang'
 import SubTitle from '../../components/SubTitle'
-import DownloadPath from "@/screens/Home/Views/Setting/settings/Download/DownloadPath.tsx";
-import IsWriteAlias from "@/screens/Home/Views/Setting/settings/Download/IsWriteAlias.tsx";
+import DownloadPath from "@/screens/Home/Views/Setting/settings/Download/DownloadPath";
+import IsWriteAlias from "@/screens/Home/Views/Setting/settings/Download/IsWriteAlias";
 
 export default memo(() => {
   const t = useI18n()

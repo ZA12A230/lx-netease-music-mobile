@@ -4,7 +4,7 @@ import { clearListDetail, getListDetail, setListDetail, setListDetailInfo } from
 import songlistState from '@/store/songlist/state'
 import { handlePlay } from './listAction'
 import { useListInfo } from './state'
-import {DetailInfo} from "@/screens/SonglistDetail/Header.tsx"
+import {DetailInfo} from "@/screens/SonglistDetail/Header"
 import playerState from '@/store/player/state'
 import { LIST_IDS } from '@/config/constant'
 import listState from '@/store/list/state'

@@ -7,7 +7,7 @@ import wyMusicDetailApi from '@/utils/musicSdk/wy/musicDetail'
 import { playOnlineList } from '@/core/list'
 import { MUSIC_TOGGLE_MODE } from '@/config/constant'
 import { updateSetting } from '@/core/common'
-import { useWySubscribedPlaylists, useWyUid } from '@/store/user/hook.ts'
+import { useWySubscribedPlaylists, useWyUid } from '@/store/user/hook'
 import userState from '@/store/user/state'
 import { useSettingValue } from '@/store/setting/hook'
 import { toast } from '@/utils/tools'
@@ -19,7 +19,7 @@ import commonState from '@/store/common/state'
 import playerState from '@/store/player/state'
 import { LIST_IDS } from '@/config/constant'
 import listState from '@/store/list/state'
-import {setWySubscribedPlaylists} from "@/store/user/action.ts"
+import {setWySubscribedPlaylists} from "@/store/user/action"
 import MusicInfoOnline = LX.Music.MusicInfoOnline;
 
 export default memo(() => {

@@ -10,7 +10,7 @@ import { useI18n } from '@/lang'
 import { useVersionDownloadProgressUpdated, useVersionInfo } from '@/store/version/hook'
 import Text from '@/components/common/Text'
 import { checkUpdate, showModal } from '@/core/version'
-import IsAutoCheckUpdate from "@/screens/Home/Views/Setting/settings/Version/IsAutoCheckUpdate.tsx";
+import IsAutoCheckUpdate from "@/screens/Home/Views/Setting/settings/Version/IsAutoCheckUpdate";
 
 const currentVer = process.versions.app
 export default memo(() => {

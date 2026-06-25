@@ -12,7 +12,7 @@ import event = Animated.event;
 import wyApi from '@/utils/musicSdk/wy/user'
 import { useIsWyArtistFollowed } from '@/store/user/hook'
 import { addWyFollowedArtist, removeWyFollowedArtist } from '@/store/user/action'
-import {FollowedArtistInfo} from "@/store/user/state.ts";
+import {FollowedArtistInfo} from "@/store/user/state";
 
 export default memo(({ artist, showFollowButton = false }: { artist: any, showFollowButton?: boolean }) => {
   const theme = useTheme()

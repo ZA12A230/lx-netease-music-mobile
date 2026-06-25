@@ -16,8 +16,8 @@ import {
   setWySubscribedAlbums,
   setWySubscribedPlaylists,
   setWyUid
-} from '@/store/user/action.ts'
-import {getDownloadTasks} from "@/utils/data/download.ts";
+} from '@/store/user/action'
+import {getDownloadTasks} from "@/utils/data/download";
 import downloadActions from '@/store/download/action';
 // const initPrevPlayInfo = async(appSetting: LX.AppSetting) => {
 //   const info = await getPlayInfo()

@@ -9,7 +9,7 @@ import IsAutoSaveDailyRec from './IsAutoSaveDailyRec';
 import IsShowMyListSubMenu from './IsShowMyListSubMenu';
 
 import { useI18n } from '@/lang'
-import MenuSettings from "@/screens/Home/Views/Setting/settings/List/MenuSettings.tsx";
+import MenuSettings from "@/screens/Home/Views/Setting/settings/List/MenuSettings";
 
 export default memo(() => {
   const t = useI18n()

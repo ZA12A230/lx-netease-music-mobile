@@ -13,7 +13,7 @@ import wyApi from '@/utils/musicSdk/wy/user'
 import {addWyLikedSong, removeWyLikedSong, updateWySubscribedPlaylistTrackCount} from '@/store/user/action'
 import { clearListDetailCache } from '@/core/songlist'
 import {Text, View} from "react-native";
-import {useWySubscribedPlaylists} from "@/store/user/hook.ts";
+import {useWySubscribedPlaylists} from "@/store/user/hook";
 
 export interface SelectInfo {
   selectedList: LX.Music.MusicInfo[]

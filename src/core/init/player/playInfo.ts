@@ -1,7 +1,7 @@
 import { getPlayInfo } from '@/utils/data'
 import { getListMusics } from '@/core/list'
 import { playList, play } from '@/core/player/player'
-import {LIST_IDS} from "@/config/constant.ts"
+import {LIST_IDS} from "@/config/constant"
 import listAction from '@/store/list/action'
 
 export default async (setting: LX.AppSetting) => {

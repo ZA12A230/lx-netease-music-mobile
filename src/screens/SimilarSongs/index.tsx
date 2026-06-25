@@ -10,7 +10,7 @@ import { playOnlineList } from '@/core/list';
 import { usePlayerMusicInfo } from '@/store/player/hook';
 import playerState from '@/store/player/state';
 import listState from '@/store/list/state';
-import {LIST_IDS} from "@/config/constant.ts";
+import {LIST_IDS} from "@/config/constant";
 
 export default memo(({ componentId, similarSongs: initialSimilarSongs }: { componentId: string, similarSongs: LX.Music.MusicInfoOnline[] }) => {
   const listRef = useRef<OnlineListType>(null);

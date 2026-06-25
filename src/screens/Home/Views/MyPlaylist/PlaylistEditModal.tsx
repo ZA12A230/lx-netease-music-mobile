@@ -7,7 +7,7 @@ import { createStyle, toast } from '@/utils/tools'
 import { useTheme } from '@/store/theme/hook'
 import wyApi from '@/utils/musicSdk/wy/user'
 import { updateWySubscribedPlaylist } from '@/store/user/action'
-import {SubscribedPlaylistInfo} from "@/store/user/state.ts";
+import {SubscribedPlaylistInfo} from "@/store/user/state";
 
 interface PlaylistInfo {
   id: string

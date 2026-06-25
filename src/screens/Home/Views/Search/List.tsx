@@ -5,7 +5,7 @@ import type { Source as SongListSource } from '@/store/search/songlist/state'
 import MusicList, { type MusicListType } from './MusicList'
 import BlankView, { type BlankViewType } from './BlankView'
 import SonglistList from './SonglistList'
-import SearchResultList from "@/screens/Home/Views/Search/SearchResultList.tsx";
+import SearchResultList from "@/screens/Home/Views/Search/SearchResultList";
 
 interface ListProps {
   onSearch: (keyword: string) => void

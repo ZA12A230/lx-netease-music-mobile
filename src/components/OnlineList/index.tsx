@@ -26,10 +26,10 @@ import {createStyle, toast} from '@/utils/tools'
 import wyApi from '@/utils/musicSdk/wy/user'
 import {getMvUrl} from "@/utils/musicSdk/wy/mv.js"
 import {useI18n} from "@/lang"
-import {removeWyLikedSong, updateWySubscribedPlaylistTrackCount} from "@/store/user/action.ts"
-import {clearListDetailCache} from "@/core/songlist.ts"
+import {removeWyLikedSong, updateWySubscribedPlaylistTrackCount} from "@/store/user/action"
+import {clearListDetailCache} from "@/core/songlist"
 import commonState from '@/store/common/state'
-import {useWySubscribedPlaylists} from "@/store/user/hook.ts";
+import {useWySubscribedPlaylists} from "@/store/user/hook";
 import SimilarSongsModal, { type SimilarSongsModalType } from '@/components/SimilarSongsModal'
 import BatchDownloadModal, { type BatchDownloadModalType } from './BatchDownloadModal'
 

@@ -27,8 +27,8 @@ import settingState from '@/store/setting/state'
 import playerState from '@/store/player/state'
 import { tranditionalize } from '@/utils/simplify-chinese-main'
 import { getPosition } from '@/plugins/player'
-import { windowSizeTools } from "@/utils/windowSizeTools.ts";
-import { updateSetting } from "@/core/common.ts";
+import { windowSizeTools } from "@/utils/windowSizeTools";
+import { updateSetting } from "@/core/common";
 export { onLyricLinePlay } from '@/utils/nativeModules/lyricDesktop'
 
 export const showDesktopLyric = async () => {

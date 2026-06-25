@@ -10,9 +10,9 @@ import {
 } from '@/core/list'
 import { playList } from '@/core/player/player'
 import listState from '@/store/list/state'
-import {clearPlayedList} from "@/core/player/playedList.ts";
+import {clearPlayedList} from "@/core/player/playedList";
 import settingState from '@/store/setting/state';
-import {toast} from "@/utils/tools.ts";
+import {toast} from "@/utils/tools";
 
 export const handlePlay = async (list: LX.Music.MusicInfoOnline[], index = 0) => {
   const listId = 'dailyrec_wy'

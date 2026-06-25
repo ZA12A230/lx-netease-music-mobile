@@ -7,8 +7,8 @@ import {
 } from '@/utils/data'
 import { destroy, loadScript } from '@/utils/nativeModules/userApi'
 import { log as writeLog } from '@/utils/log'
-import {getAllKeys, removeDataMultiple, saveDataMultiple} from "@/plugins/storage.ts";
-import {storageDataPrefix} from "@/config/constant.ts";
+import {getAllKeys, removeDataMultiple, saveDataMultiple} from "@/plugins/storage";
+import {storageDataPrefix} from "@/config/constant";
 
 export const setUserApi = async (apiId: string) => {
   global.lx.qualityList = {}

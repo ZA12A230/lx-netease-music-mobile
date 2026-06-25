@@ -7,7 +7,7 @@ import { useTheme } from '@/store/theme/hook'
 import { createStyle } from '@/utils/tools'
 import { playOnlineList } from '@/core/list'
 import { BorderWidths } from '@/theme'
-import { Icon } from '@/components/common/Icon.tsx'
+import { Icon } from '@/components/common/Icon'
 import PagerView, { type PagerViewOnPageSelectedEvent } from 'react-native-pager-view'
 import { type OnlineListType } from '@/components/OnlineList'
 
