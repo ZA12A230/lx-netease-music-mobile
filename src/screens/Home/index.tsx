@@ -17,6 +17,7 @@ import {useBackHandler} from "@/utils/hooks/useBackHandler";
 import { setSearchText as setSearchState } from '@/core/search/search'
 import WebLoginManager from "@/components/WebLoginManager";
 import MultiPlatformLoginManager from "@/components/MultiPlatformLoginManager";
+import ShareCodeManager from "@/components/ShareCodeManager";
 import DownloadBall from "@/components/DownloadBall";
 import YouTubeLoginManager from "@/components/YouTubeLoginManager";
 import VideoPlayerManager from "@/components/VideoPlayerManager";
@@ -82,6 +83,7 @@ export default ({ componentId }: Props) => {
       <ArtistSelectorManager />
       <WebLoginManager />
       <MultiPlatformLoginManager />
+      <ShareCodeManager />
       {/*<YouTubeLoginManager />*/}
       <VideoPlayerManager />
       <DownloadBall />

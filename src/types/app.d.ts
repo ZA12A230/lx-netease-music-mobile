@@ -87,6 +87,16 @@ declare global {
     }) => void
     showYouTubeLogin: () => void
     showVideoPlayer: (url: string) => void
+    importShareCode: (playlist: {
+      name: string
+      songs: Array<{
+        name: string
+        singer: string
+        source: string
+        songId: string | number
+      }>
+      timestamp: number
+    }) => void
   }
   var list_event: ListEventTypes
   var dislike_event: DislikeEventTypes
