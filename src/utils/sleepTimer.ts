@@ -20,6 +20,8 @@ export const startSleepTimer = (time: number, mode: SleepTimerMode = 'normal') =
   // 先停止之前的定时器
   stopSleepTimer()
 
+  currentTimerMode = mode
+
   switch (mode) {
     case 'normal':
       // time是分钟，startTimeoutExit需要秒
@@ -90,15 +92,15 @@ export const stopSleepTimer = () => {
   stopFadeOut()
   stopTimeoutExit()
   cancelTimeoutExit()
+  currentTimerMode = 'normal'
   updateSetting({ 'player.timeoutExit': '' })
 }
 
+let currentTimerMode: SleepTimerMode = 'normal'
+
 /** 获取当前睡眠定时器模式 */
 export const getSleepTimerMode = (): SleepTimerMode => {
-  if (global.lx.isPlayedStop) return 'after_current'
-  const time = settingState.setting['player.timeoutExit']
-  if (!time || time === '-1') return 'normal'
-  return 'normal'
+  return currentTimerMode
 }
 
 /** 获取剩余时间 */

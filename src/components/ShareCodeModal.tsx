@@ -65,11 +65,6 @@ export default forwardRef<ShareCodeModalType, {}>((props, ref) => {
     toast('分享码已复制到剪贴板')
   }, [shareCode])
 
-  const handleSwitchMode = useCallback(() => {
-    setMode(mode === 'share' ? 'import' : 'share')
-    setImportCode('')
-  }, [mode])
-
   const handleImport = useCallback(() => {
     if (!importCode.trim()) {
       toast('请输入分享码')

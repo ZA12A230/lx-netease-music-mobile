@@ -18,6 +18,7 @@ import { setSearchText as setSearchState } from '@/core/search/search'
 import WebLoginManager from "@/components/WebLoginManager";
 import MultiPlatformLoginManager from "@/components/MultiPlatformLoginManager";
 import ShareCodeManager from "@/components/ShareCodeManager";
+import ShareCodeImportManager from "@/components/ShareCodeImportManager";
 import DownloadBall from "@/components/DownloadBall";
 import YouTubeLoginManager from "@/components/YouTubeLoginManager";
 import VideoPlayerManager from "@/components/VideoPlayerManager";
@@ -84,6 +85,7 @@ export default ({ componentId }: Props) => {
       <WebLoginManager />
       <MultiPlatformLoginManager />
       <ShareCodeManager />
+      <ShareCodeImportManager />
       {/*<YouTubeLoginManager />*/}
       <VideoPlayerManager />
       <DownloadBall />
