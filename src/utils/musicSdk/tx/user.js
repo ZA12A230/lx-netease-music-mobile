@@ -1,0 +1,164 @@
+import { httpFetch } from '../../request'
+import settingState from '@/store/setting/state'
+import { toast } from '@/utils/tools'
+
+/**
+ * QQ音乐用户API模块
+ * 通过Cookie获取用户信息、收藏歌单、喜欢歌曲等
+ */
+export default {
+  /**
+   * 获取用户UID
+   */
+  async getUid(cookie, retryNum = 0) {
+    if (!cookie) throw new Error('Cookie is required to get UID')
+    const maxRetries = 3
+    const retryDelay = 200
+
+    try {
+      const request = httpFetch('https://u.y.qq.com/cgi-bin/musicu.fcg', {
+        method: 'post',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          Referer: 'https://y.qq.com',
+          cookie,
+        },
+        form: {
+          comm: { ct: 24, cv: 10000 },
+          req: { module: 'userInfo.BaseUserInfoServer', method: 'get_user_baseinfo', param: { vec_uin: [''] } },
+        },
+      })
+      const { body, statusCode } = await request.promise
+      if (statusCode !== 200 || body.code !== 0) throw new Error('获取QQ音乐UID失败')
+      const uid = body.req?.data?.map_userinfo?.['']?.uin
+      if (!uid) throw new Error('登录已过期或Cookie无效')
+      return String(uid)
+    } catch (error) {
+      if (retryNum < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay))
+        return this.getUid(cookie, retryNum + 1)
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 获取用户收藏歌单
+   */
+  async getUserPlaylists(uid, cookie, retryNum = 0) {
+    const maxRetries = 3
+    const retryDelay = 200
+    try {
+      const request = httpFetch('https://c.y.qq.com/rsc/fcgi-bin/fcg_get_profile_homepage.fcg', {
+        method: 'get',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          Referer: 'https://y.qq.com',
+          cookie,
+        },
+        form: {
+          uin: uid,
+          sin: 0,
+          num: 100,
+        },
+      })
+      const { body, statusCode } = await request.promise
+      if (statusCode !== 200 || body.code !== 0) throw new Error('获取QQ音乐歌单失败')
+      return (body.data?.mydiss?.list || []).map(item => ({
+        id: item.dissid,
+        name: item.title,
+        coverImgUrl: item.imgurl,
+        userId: uid,
+        trackCount: item.songnum || 0,
+      }))
+    } catch (error) {
+      if (retryNum < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay))
+        return this.getUserPlaylists(uid, cookie, retryNum + 1)
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 获取收藏的歌手列表
+   */
+  async getSublist(cookie, retryNum = 0) {
+    const maxRetries = 3
+    const retryDelay = 200
+    try {
+      const request = httpFetch('https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_singer_sublist.fcg', {
+        method: 'get',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          Referer: 'https://y.qq.com',
+          cookie,
+        },
+        form: { sin: 0, num: 200 },
+      })
+      const { body, statusCode } = await request.promise
+      if (statusCode !== 200 || body.code !== 0) throw new Error('获取QQ音乐关注歌手失败')
+      return (body.data?.list || []).map(s => ({
+        id: s.singer_mid,
+        name: s.singer_name,
+        picUrl: s.singer_pic || '',
+        alias: null,
+        albumSize: s.album_num || 0,
+        img1v1Url: s.singer_pic || '',
+      }))
+    } catch (error) {
+      if (retryNum < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay))
+        return this.getSublist(cookie, retryNum + 1)
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 获取收藏的专辑列表
+   */
+  async getAlbumSublist(cookie, retryNum = 0) {
+    const maxRetries = 3
+    const retryDelay = 200
+    try {
+      const request = httpFetch('https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_album_sublist.fcg', {
+        method: 'get',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          Referer: 'https://y.qq.com',
+          cookie,
+        },
+        form: { sin: 0, num: 200 },
+      })
+      const { body, statusCode } = await request.promise
+      if (statusCode !== 200 || body.code !== 0) throw new Error('获取QQ音乐收藏专辑失败')
+      return (body.data?.list || []).map(a => ({
+        id: a.album_mid,
+        name: a.album_name,
+        picUrl: a.album_pic || '',
+        artists: [{ id: a.singer_mid, name: a.singer_name }],
+        publishTime: 0,
+        size: a.song_num || 0,
+      }))
+    } catch (error) {
+      if (retryNum < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay))
+        return this.getAlbumSublist(cookie, retryNum + 1)
+      }
+      throw error
+    }
+  },
+
+  /**
+   * 验证Cookie有效性
+   */
+  async checkCookie(cookie) {
+    try {
+      await this.getUid(cookie)
+      return true
+    } catch {
+      return false
+    }
+  },
+}

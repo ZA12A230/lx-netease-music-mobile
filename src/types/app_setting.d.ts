@@ -77,6 +77,14 @@ declare global {
       'common.yt_cookie': string
 
       /**
+       * 多平台登录 Cookie
+       */
+      'common.kg_cookie': string
+      'common.kw_cookie': string
+      'common.tx_cookie': string
+      'common.mg_cookie': string
+
+      /**
        * 总是保留状态栏高度
        */
       'common.alwaysKeepStatusbarHeight': boolean

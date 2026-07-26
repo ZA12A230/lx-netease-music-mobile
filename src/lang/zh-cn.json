@@ -251,6 +251,7 @@
   "setting__other_other_source_label": "换源歌曲信息数量：",
   "setting__other_resource_cache": "资源缓存管理（包括歌曲、图片缓存）",
   "setting_about": "关于 LX-N Music",
+  "setting_account": "账户管理",
   "setting_backup": "备份与恢复",
   "setting_backup_all": "所有数据（歌单、播放历史、下载记录、设置与自定义音源）",
   "setting_backup_all_export": "导出",
