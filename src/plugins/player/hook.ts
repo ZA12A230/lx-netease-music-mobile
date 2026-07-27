@@ -179,7 +179,12 @@ export function useBufferProgress() {
 
     void updateBuffer()
     void TrackPlayer.getState().then((state) => {
-      if (state == State.Buffering) interval = setInterval(updateBuffer, 1000)
+      if (isUnmounted) return
+      if (state == State.Buffering) {
+        clearItv()
+        interval = setInterval(updateBuffer, 1000)
+        void updateBuffer()
+      }
     })
     return () => {
       isUnmounted = true

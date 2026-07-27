@@ -14,9 +14,10 @@ import { useI18n } from '@/lang'
 
 export const ITEM_HEIGHT = scaleSizeH(LIST_ITEM_HEIGHT)
 
-const useQualityTag = (musicInfo: LX.Music.MusicInfoOnline) => {
+const useQualityTag = (musicInfo: LX.Music.MusicInfo | LX.Music.MusicInfoOnline) => {
   const t = useI18n()
   let info: { type: BadgeType | null; text: string } = { type: null, text: '' }
+  if (musicInfo.source === 'local') return info
   if (musicInfo.meta._qualitys.hires) {
     info.type = 'secondary'
     info.text = t('quality_lossless_24bit')
@@ -68,7 +69,7 @@ export default memo(
     const isSupported = useAssertApiSupport(item.source)
     const moreButtonRef = useRef<TouchableOpacity>(null)
 
-    const tagInfo = item.source === 'local' ? { type: null, text: '' } : useQualityTag(item as LX.Music.MusicInfoOnline)
+    const tagInfo = useQualityTag(item)
 
     const handleShowMenu = () => {
       if (moreButtonRef.current?.measure) {

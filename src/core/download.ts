@@ -449,8 +449,10 @@ export const removeTask = (id: string) => {
   if (taskIndex > -1) taskQueue.splice(taskIndex, 1);
   // 从store中移除
   downloadActions.removeTask(id);
-  isProcessing = false;
-  processQueue();
+  // 注意：不在此处重置 isProcessing 和调用 processQueue
+  // processQueue 的 finally 块会统一处理队列推进，避免并发竞态
+  // 如果当前没有任务在处理（isProcessing 为 false），手动触发队列
+  if (!isProcessing) processQueue();
 };
 
 
