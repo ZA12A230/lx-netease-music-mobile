@@ -26,13 +26,23 @@ jobs:
       - name: Build Packages
         env:
           DISABLE_SVG: 1
+          KEYSTORE_BASE64: ${{ secrets.MYAPP_KEYSTORE_BASE64 }}
+          STORE_FILE: ${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
+          KEY_ALIAS: ${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}
+          STORE_PASSWORD: ${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}
         shell: bash
         run: |
           cd android
-          echo ${{ secrets.MYAPP_KEYSTORE_BASE64 }} | base64 --decode > app/${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
           chmod +x ./gradlew
-          ./gradlew assembleRelease -PMYAPP_UPLOAD_STORE_FILE='${{ secrets.MYAPP_UPLOAD_STORE_FILE }}' -PMYAPP_UPLOAD_KEY_ALIAS='${{ secrets.MYAPP_UPLOAD_KEY_ALIAS }}' -PMYAPP_UPLOAD_STORE_PASSWORD='${{ secrets.MYAPP_UPLOAD_STORE_PASSWORD }}' -PMYAPP_UPLOAD_KEY_PASSWORD='${{ secrets.MYAPP_UPLOAD_KEY_PASSWORD }}'
-          rm -f app/${{ secrets.MYAPP_UPLOAD_STORE_FILE }}
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$STORE_FILE" ]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > "app/$STORE_FILE"
+            ./gradlew assembleRelease -PMYAPP_UPLOAD_STORE_FILE="$STORE_FILE" -PMYAPP_UPLOAD_KEY_ALIAS="$KEY_ALIAS" -PMYAPP_UPLOAD_STORE_PASSWORD="$STORE_PASSWORD" -PMYAPP_UPLOAD_KEY_PASSWORD="$KEY_PASSWORD"
+            rm -f "app/$STORE_FILE"
+          else
+            echo "No keystore secrets found, building with debug signing config"
+            ./gradlew assembleRelease
+          fi
 
       - name: Get package version
         id: package_version

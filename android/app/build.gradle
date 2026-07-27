@@ -165,7 +165,10 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
 
-            signingConfig signingConfigs.release
+            // 只有当 release 签名配置有效时才使用，否则回退到 debug 签名
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE') || rootProject.file("keystore.properties").exists()) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
