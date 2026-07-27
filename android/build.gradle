@@ -27,3 +27,12 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// 禁用所有子项目的 Kotlin 警告作为错误处理，避免 RN gradle-plugin 编译失败
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            allWarningsAsErrors = false
+        }
+    }
+}

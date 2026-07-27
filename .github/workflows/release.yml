@@ -23,6 +23,18 @@ jobs:
       - name: Setup Env
         uses: ./.github/actions/setup
 
+      - name: Disable Kotlin Werror in gradle-plugin
+        shell: bash
+        run: |
+          PLUGIN_FILE="node_modules/@react-native/gradle-plugin/build.gradle.kts"
+          if [ -f "$PLUGIN_FILE" ]; then
+            sed -i 's/allWarningsAsErrors[[:space:]]*=[[:space:]]*true/allWarningsAsErrors = false/g' "$PLUGIN_FILE"
+            sed -i 's/"-Werror"//g' "$PLUGIN_FILE"
+            echo "Patched gradle-plugin to disable allWarningsAsErrors"
+          else
+            echo "gradle-plugin build file not found, skipping patch"
+          fi
+
       - name: Build Packages
         env:
           DISABLE_SVG: 1
