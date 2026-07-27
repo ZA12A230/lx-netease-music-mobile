@@ -9,6 +9,7 @@ import { apis } from '../api-source'
 import songList from './songList'
 import hotSearch from './hotSearch'
 import comment from './comment'
+import * as user from './user'
 import {resolveQualityAlias} from "@/utils/musicSdk/utils";
 
 const kw = {
@@ -38,6 +39,7 @@ const kw = {
   songList,
   hotSearch,
   comment,
+  user,
   getLyric(songInfo, isGetLyricx) {
     // let singer = songInfo.singer.indexOf('、') > -1 ? songInfo.singer.split('、')[0] : songInfo.singer
     return lyric.getLyric(songInfo, isGetLyricx)

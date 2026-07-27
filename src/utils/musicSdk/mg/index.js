@@ -6,6 +6,7 @@ import pic from './pic'
 import lyric from './lyric'
 import hotSearch from './hotSearch'
 import comment from './comment'
+import * as user from './user'
 import {resolveQualityAlias} from "@/utils/musicSdk/utils";
 // import tipSearch from './tipSearch'
 
@@ -16,6 +17,7 @@ const mg = {
   leaderboard,
   hotSearch,
   comment,
+  user,
   getMusicUrl(songInfo, type) {
     const qualityToRequest = resolveQualityAlias('mg', type); // 2. 解析音质
     return apis('mg').getMusicUrl(songInfo, qualityToRequest);

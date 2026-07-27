@@ -40,14 +40,10 @@ const scale = Math.min(scaleW, scaleH, 3.1)
  * @returns dp
  */
 export function getTextSize(size: number) {
-  // console.log('screenW======' + screenW)
-  // console.log('screenPxW======' + screenPxW)
   let scaleWidth = screenW / designWidth
   let scaleHeight = screenH / designHeight
-  // console.log(scaleWidth, scaleHeight)
-  let scale = Math.min(scaleWidth, scaleHeight, 1.3)
+  let scale = Math.min(scaleWidth, scaleHeight, 2.0)
   size = Math.floor((size * scale) / fontScale)
-  // console.log(size)
   return size
 }
 export function setSpText(size: number) {

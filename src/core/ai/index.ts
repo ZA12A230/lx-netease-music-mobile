@@ -55,10 +55,12 @@ ${toolDescs}
 // ============ 服务管理 ============
 let _activeServiceId: string = DEFAULT_SERVICE_ID
 let _userApiKeys: Record<string, string> = {}
+let _customServices: AIServiceConfig[] = []
 
 export const initAiService = async () => {
   _activeServiceId = (await getData<string>(AI_STORAGE_KEYS.activeService)) || DEFAULT_SERVICE_ID
   _userApiKeys = (await getData<Record<string, string>>(AI_STORAGE_KEYS.userApiKeys)) || {}
+  _customServices = (await getData<AIServiceConfig[]>(AI_STORAGE_KEYS.customServices)) || []
 }
 
 export const getActiveServiceId = () => _activeServiceId
@@ -75,8 +77,77 @@ export const setUserApiKey = async (serviceId: string, key: string) => {
   await saveData(AI_STORAGE_KEYS.userApiKeys, _userApiKeys)
 }
 
+/** 获取所有服务（预置 + 自定义） */
+export const getAllServices = (): AIServiceConfig[] => {
+  return [...PRESET_SERVICES, ..._customServices]
+}
+
+/** 获取自定义服务列表 */
+export const getCustomServices = () => _customServices
+
+/** 添加自定义 API 服务 */
+export const addCustomService = async (config: {
+  name: string
+  apiUrl: string
+  model: string
+  apiKey: string
+}) => {
+  const id = `custom_${Date.now()}`
+  const newService: AIServiceConfig = {
+    id,
+    name: config.name,
+    type: 'openai_compatible',
+    apiUrl: config.apiUrl,
+    model: config.model,
+    builtin: false,
+  }
+  _customServices = [..._customServices, newService]
+  await saveData(AI_STORAGE_KEYS.customServices, _customServices)
+  // 同时保存 API Key
+  if (config.apiKey) {
+    await setUserApiKey(id, config.apiKey)
+  }
+  return id
+}
+
+/** 更新自定义服务 */
+export const updateCustomService = async (id: string, config: {
+  name?: string
+  apiUrl?: string
+  model?: string
+  apiKey?: string
+}) => {
+  _customServices = _customServices.map((s) => {
+    if (s.id !== id) return s
+    return {
+      ...s,
+      name: config.name ?? s.name,
+      apiUrl: config.apiUrl ?? s.apiUrl,
+      model: config.model ?? s.model,
+    }
+  })
+  await saveData(AI_STORAGE_KEYS.customServices, _customServices)
+  if (config.apiKey !== undefined) {
+    await setUserApiKey(id, config.apiKey)
+  }
+}
+
+/** 删除自定义服务 */
+export const deleteCustomService = async (id: string) => {
+  _customServices = _customServices.filter((s) => s.id !== id)
+  await saveData(AI_STORAGE_KEYS.customServices, _customServices)
+  // 如果删除的是当前激活的服务，切回默认
+  if (_activeServiceId === id) {
+    await setActiveService(DEFAULT_SERVICE_ID)
+  }
+  // 清理 API Key
+  delete _userApiKeys[id]
+  await saveData(AI_STORAGE_KEYS.userApiKeys, _userApiKeys)
+}
+
 export const getActiveServiceConfig = (): AIServiceConfig => {
-  return PRESET_SERVICES.find((s) => s.id === _activeServiceId) || PRESET_SERVICES[0]
+  const allServices = [...PRESET_SERVICES, ..._customServices]
+  return allServices.find((s) => s.id === _activeServiceId) || PRESET_SERVICES[0]
 }
 
 export const getPresetServices = () => PRESET_SERVICES

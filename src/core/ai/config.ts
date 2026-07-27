@@ -187,6 +187,7 @@ export const AI_STORAGE_KEYS = {
   authorized: '@ai_authorized_v1',
   chatHistory: '@ai_chat_history_v1',
   userApiKeys: '@ai_user_apikeys_v1',
+  customServices: '@ai_custom_services_v1',
 }
 
 // 科大讯飞可用模型列表

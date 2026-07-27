@@ -102,7 +102,6 @@ export const getMusicUrl = async ({
   if (preferApi) {
     try {
       console.log('Attempting to get music URL via custom API');
-      // 优先尝试自定义音源 (API)
       const result = await handleGetOnlineMusicUrl({
         musicInfo: currentMusicInfo,
         quality: targetQuality,
@@ -114,12 +113,25 @@ export const getMusicUrl = async ({
       void saveMusicUrl(currentMusicInfo, result.quality, result.url);
       return result.url;
     } catch (apiError) {
-      console.log('Custom API request failed', apiError);
+      console.log('Custom API request failed, trying cookie fallback', apiError);
+      // API 失败时，尝试用 cookie 方式获取（仅网易云）
+      if (musicInfo.source == 'wy' && settingState.setting['common.wy_cookie']) {
+        try {
+          const { url } = await wySdk.cookie.getMusicUrl(currentMusicInfo, targetQuality).promise;
+          if (url) {
+            void saveMusicUrl(currentMusicInfo, targetQuality, url);
+            if (currentMusicInfo.id !== musicInfo.id) void saveMusicUrl(musicInfo, targetQuality, url);
+            return url;
+          }
+        } catch (cookieError) {
+          console.log('Cookie fallback also failed', cookieError);
+        }
+      }
       throw apiError;
     }
   }
 
-  // 默认流程
+  // 默认流程：先尝试 cookie 方式（网易云）
   if (musicInfo.source == 'wy' && settingState.setting['common.wy_cookie']) {
     try {
       const { url } = await wySdk.cookie.getMusicUrl(currentMusicInfo, targetQuality).promise;

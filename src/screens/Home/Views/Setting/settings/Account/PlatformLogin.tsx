@@ -12,6 +12,7 @@ import txApi from '@/utils/musicSdk/tx/user'
 import kgApi from '@/utils/musicSdk/kg/user'
 import kwApi from '@/utils/musicSdk/kw/user'
 import mgApi from '@/utils/musicSdk/mg/user'
+import * as userActions from '@/store/user/action'
 
 /** 平台信息配置 */
 const PLATFORM_CONFIG: Record<string, {
@@ -138,10 +139,17 @@ export default memo(({ platformId }: PlatformLoginProps) => {
 
       toast(`${config.name} 开始同步数据...`)
 
+      const prefix = platformId // wy/tx/kg/kw/mg
+      // 设置 UID 到 store
+      const setUidAction = (userActions as any)[`set${prefix.charAt(0).toUpperCase() + prefix.slice(1)}Uid`]
+      if (setUidAction) setUidAction(String(currentUid))
+
       // 同步歌单
       try {
         const playlists = await config.api.getUserPlaylists(currentUid, cookie)
         console.log(`${config.name} 歌单同步完成: ${playlists.length} 个`)
+        const setPlaylists = (userActions as any)[`set${prefix.charAt(0).toUpperCase() + prefix.slice(1)}SubscribedPlaylists`]
+        if (setPlaylists) setPlaylists(playlists)
       } catch (e) {
         console.warn(`${config.name} 歌单同步失败:`, e)
       }
@@ -152,6 +160,8 @@ export default memo(({ platformId }: PlatformLoginProps) => {
           ? await config.api.getAllSublist()
           : await config.api.getSublist(cookie)
         console.log(`${config.name} 歌手同步完成: ${artists.length} 个`)
+        const setArtists = (userActions as any)[`set${prefix.charAt(0).toUpperCase() + prefix.slice(1)}FollowedArtists`]
+        if (setArtists) setArtists(artists)
       } catch (e) {
         console.warn(`${config.name} 歌手同步失败:`, e)
       }
@@ -162,6 +172,8 @@ export default memo(({ platformId }: PlatformLoginProps) => {
           ? await config.api.getAllSubAlbumList()
           : await config.api.getAlbumSublist(cookie)
         console.log(`${config.name} 专辑同步完成: ${albums.length} 个`)
+        const setAlbums = (userActions as any)[`set${prefix.charAt(0).toUpperCase() + prefix.slice(1)}SubscribedAlbums`]
+        if (setAlbums) setAlbums(albums)
       } catch (e) {
         console.warn(`${config.name} 专辑同步失败:`, e)
       }

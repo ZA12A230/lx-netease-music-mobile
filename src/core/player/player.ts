@@ -172,7 +172,15 @@ export const setMusicUrl = (
     })
     .catch((err: any) => {
       console.log(err)
-      setStatusText(err.message as string)
+      // 显示友好的错误提示，而非原始错误消息
+      const errMsg = err?.message ?? ''
+      if (errMsg.includes('timeout') || errMsg.includes('网络')) {
+        setStatusText(global.i18n.t('player__getting_url_failed') || '获取播放链接失败，请检查网络')
+      } else if (errMsg.includes('vip') || errMsg.includes('VIP') || errMsg.includes('copyright')) {
+        setStatusText(global.i18n.t('player__error_vip') || '此歌曲需要VIP或无版权')
+      } else {
+        setStatusText(global.i18n.t('player__error') || '音频加载出错')
+      }
       global.app_event.playerError()
       // addDelayNextTimeout()
     })

@@ -7,7 +7,7 @@ import Text from '@/components/common/Text'
 import { Icon } from '@/components/common/Icon'
 import { useTheme } from '@/store/theme/hook'
 import { createStyle } from '@/utils/tools'
-import { chat, getActiveServiceId, setActiveService, getPresetServices, getUserApiKey, setUserApiKey, summarizeLyrics, initAiService } from '@/core/ai'
+import { chat, getActiveServiceId, setActiveService, getPresetServices, getUserApiKey, setUserApiKey, summarizeLyrics, initAiService, getAllServices, getCustomServices, addCustomService, deleteCustomService } from '@/core/ai'
 import { checkQuota, authorize, getRemainingQuota, isAuthorized } from '@/core/ai/quota'
 import { getUserXunfeiConfig, setUserXunfeiConfig, XUNFEI_MODELS } from '@/core/ai/config'
 import type { ChatMessage as AIChatMessage } from '@/core/ai/providers/xunfei'
@@ -287,7 +287,7 @@ const MusicAssistant = () => {
 }
 
 const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void; theme: any; onRefresh: () => void }) => {
-  const [services] = useState(getPresetServices())
+  const [allServices, setAllServices] = useState(getAllServices())
   const [activeId, setActiveId] = useState(getActiveServiceId())
   const [apiKeys, setApiKeys] = useState<Record<string, string>>({})
   const [showAuth, setShowAuth] = useState(false)
@@ -295,13 +295,18 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
   const [xunfeiConfig, setXunfeiConfig] = useState(getUserXunfeiConfig())
   const [showXunfeiDetail, setShowXunfeiDetail] = useState(false)
   const [selectedModel, setSelectedModel] = useState(xunfeiConfig.model || '4.0Ultra')
+  const [showCustomApi, setShowCustomApi] = useState(false)
+  const [customName, setCustomName] = useState('')
+  const [customUrl, setCustomUrl] = useState('')
+  const [customModel, setCustomModel] = useState('')
+  const [customKey, setCustomKey] = useState('')
 
   useEffect(() => {
-    services.forEach((s) => {
+    allServices.forEach((s) => {
       const key = getUserApiKey(s.id)
       if (key) setApiKeys((prev) => ({ ...prev, [s.id]: key }))
     })
-  }, [services])
+  }, [allServices])
 
   const handleSelect = async (id: string) => {
     await setActiveService(id)
@@ -331,6 +336,43 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
     }
   }
 
+  /** 添加自定义API服务 */
+  const handleAddCustomService = async () => {
+    if (!customName.trim() || !customUrl.trim() || !customModel.trim()) {
+      Alert.alert('提示', '请填写名称、API地址和模型名称')
+      return
+    }
+    const id = await addCustomService({
+      name: customName.trim(),
+      apiUrl: customUrl.trim(),
+      model: customModel.trim(),
+      apiKey: customKey.trim(),
+    })
+    setAllServices(getAllServices())
+    setCustomName('')
+    setCustomUrl('')
+    setCustomModel('')
+    setCustomKey('')
+    setShowCustomApi(false)
+    Alert.alert('添加成功', `已添加自定义API服务，可在列表中选择使用`)
+  }
+
+  /** 删除自定义服务 */
+  const handleDeleteCustom = async (id: string) => {
+    Alert.alert('确认删除', '确定要删除这个自定义API服务吗？', [
+      { text: '取消', style: 'cancel' },
+      {
+        text: '删除',
+        style: 'destructive',
+        onPress: async () => {
+          await deleteCustomService(id)
+          setAllServices(getAllServices())
+          setActiveId(getActiveServiceId())
+        },
+      },
+    ])
+  }
+
   return (
     <View style={styles.settingsOverlay}>
       <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
@@ -341,8 +383,8 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
           </Button>
         </View>
         <ScrollView style={styles.settingsList}>
-          {services.map((s) => (
-            <View key={s.id} style={[styles.serviceItem, { 
+          {allServices.map((s) => (
+            <View key={s.id} style={[styles.serviceItem, {
               borderColor: activeId === s.id ? theme['c-primary'] : 'transparent',
               backgroundColor: theme['c-primary-light-100-alpha-20'],
             }]}>
@@ -352,11 +394,20 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                   <View style={[styles.badge, { backgroundColor: theme['c-primary-light-400-alpha-40'] }]}>
                     <Text size={10} color={theme['c-primary-font']}>内置可用</Text>
                   </View>
+                ) : s.id.startsWith('custom_') ? (
+                  <View style={[styles.badge, { backgroundColor: theme['c-primary-light-400-alpha-40'] }]}>
+                    <Text size={10} color={theme['c-primary-font']}>自定义</Text>
+                  </View>
                 ) : null}
+                {s.id.startsWith('custom_') && (
+                  <Button onPress={() => handleDeleteCustom(s.id)} style={{ padding: 4, marginLeft: 8 }}>
+                    <Text size={16} color="#F44336}>✕</Text>
+                  </Button>
+                )}
               </View>
               {s.id === 'xunfei_custom' ? (
                 <View style={styles.xunfeiCustomSection}>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     onPress={() => setShowXunfeiDetail(true)}
                     style={[styles.detailBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'] }]}
                   >
@@ -376,10 +427,15 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                   onBlur={() => handleSaveKey(s.id, apiKeys[s.id] || '')}
                 />
               ) : null}
+              {s.id.startsWith('custom_') && s.apiUrl && (
+                <Text size={11} color={theme['c-font-label']} style={{ marginTop: 4, marginBottom: 4 }}>
+                  {s.apiUrl}{'\n'}模型: {s.model}
+                </Text>
+              )}
               <Button
                 onPress={() => handleSelect(s.id)}
                 disabled={activeId === s.id}
-                style={[styles.selectBtn, { 
+                style={[styles.selectBtn, {
                   backgroundColor: activeId === s.id ? theme['c-primary'] : theme['c-primary-light-100-alpha-40'],
                 }]}
               >
@@ -389,6 +445,15 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
               </Button>
             </View>
           ))}
+
+          {/* 添加自定义API按钮 */}
+          <TouchableOpacity
+            onPress={() => setShowCustomApi(true)}
+            style={[styles.addCustomBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'], borderColor: theme['c-primary-light-400-alpha-40'] }]}
+          >
+            <Text size={14} color={theme['c-primary']}>+ 添加自定义API服务</Text>
+          </TouchableOpacity>
+
           <View style={styles.authSection}>
             <Button onPress={() => setShowAuth(true)} style={[styles.authBtn, { backgroundColor: theme['c-primary'] }]}>
               <Text color="#fff" size={14}>🔐 输入管理员密码授权（无限使用）</Text>
@@ -463,6 +528,67 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 </View>
                 <Button onPress={handleSaveXunfeiConfig} style={[styles.saveBtn, { backgroundColor: theme['c-primary'] }]}>
                   <Text color="#fff" size={14}>保存配置</Text>
+                </Button>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
+        {/* 自定义API配置弹窗 */}
+        <Modal visible={showCustomApi} transparent animationType="slide" onRequestClose={() => setShowCustomApi(false)}>
+          <View style={styles.settingsOverlay}>
+            <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+              <View style={styles.settingsHeader}>
+                <Text size={18} color={theme['c-font']} fontWeight="bold">🔗 添加自定义API</Text>
+                <Button onPress={() => setShowCustomApi(false)} style={styles.headerBtn}>
+                  <Text color={theme['c-font-label']} size={24}>✕</Text>
+                </Button>
+              </View>
+              <ScrollView style={styles.settingsList}>
+                <Text size={12} color={theme['c-font-label']} style={styles.descText}>
+                  支持所有 OpenAI 兼容的 API 接口。请填写完整信息后点击保存。
+                </Text>
+                <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>服务名称</Text>
+                <TextInput
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  value={customName}
+                  onChangeText={setCustomName}
+                  placeholder="例如：我的AI服务"
+                  placeholderTextColor={theme['c-font-label']}
+                />
+                <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>API 地址</Text>
+                <TextInput
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  value={customUrl}
+                  onChangeText={setCustomUrl}
+                  placeholder="https://api.example.com/v1/chat/completions"
+                  placeholderTextColor={theme['c-font-label']}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>模型名称</Text>
+                <TextInput
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  value={customModel}
+                  onChangeText={setCustomModel}
+                  placeholder="例如：gpt-4o-mini, qwen-turbo"
+                  placeholderTextColor={theme['c-font-label']}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>API Key</Text>
+                <TextInput
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  value={customKey}
+                  onChangeText={setCustomKey}
+                  placeholder="sk-xxxxxxxx"
+                  placeholderTextColor={theme['c-font-label']}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Button onPress={handleAddCustomService} style={[styles.saveBtn, { backgroundColor: theme['c-primary'], marginTop: 16 }]}>
+                  <Text color="#fff" size={14}>保存</Text>
                 </Button>
               </ScrollView>
             </View>
@@ -701,9 +827,18 @@ const styles = createStyle({
     borderRadius: 12,
     alignItems: 'center',
   },
-  authSection: { 
-    marginTop: 10, 
+  authSection: {
+    marginTop: 10,
     marginBottom: 20,
+  },
+  addCustomBtn: {
+    padding: 14,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
   },
   descText: {
     marginBottom: 12,

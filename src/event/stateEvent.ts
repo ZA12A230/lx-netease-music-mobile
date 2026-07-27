@@ -33,6 +33,30 @@ export class StateEvent extends Event {
   wySubscribedPlaylistsChanged() {
     this.emit('wySubscribedPlaylistsChanged');
   }
+  // QQ音乐
+  txUidChanged() { this.emit('txUidChanged') }
+  txLikedListChanged() { this.emit('txLikedListChanged') }
+  txFollowedListChanged() { this.emit('txFollowedListChanged') }
+  txSubscribedAlbumsChanged() { this.emit('txSubscribedAlbumsChanged') }
+  txSubscribedPlaylistsChanged() { this.emit('txSubscribedPlaylistsChanged') }
+  // 酷狗音乐
+  kgUidChanged() { this.emit('kgUidChanged') }
+  kgLikedListChanged() { this.emit('kgLikedListChanged') }
+  kgFollowedListChanged() { this.emit('kgFollowedListChanged') }
+  kgSubscribedAlbumsChanged() { this.emit('kgSubscribedAlbumsChanged') }
+  kgSubscribedPlaylistsChanged() { this.emit('kgSubscribedPlaylistsChanged') }
+  // 酷我音乐
+  kwUidChanged() { this.emit('kwUidChanged') }
+  kwLikedListChanged() { this.emit('kwLikedListChanged') }
+  kwFollowedListChanged() { this.emit('kwFollowedListChanged') }
+  kwSubscribedAlbumsChanged() { this.emit('kwSubscribedAlbumsChanged') }
+  kwSubscribedPlaylistsChanged() { this.emit('kwSubscribedPlaylistsChanged') }
+  // 咪咕音乐
+  mgUidChanged() { this.emit('mgUidChanged') }
+  mgLikedListChanged() { this.emit('mgLikedListChanged') }
+  mgFollowedListChanged() { this.emit('mgFollowedListChanged') }
+  mgSubscribedAlbumsChanged() { this.emit('mgSubscribedAlbumsChanged') }
+  mgSubscribedPlaylistsChanged() { this.emit('mgSubscribedPlaylistsChanged') }
 
   languageChanged(locale: I18n['locale']) {
     this.emit('languageChanged', locale)
