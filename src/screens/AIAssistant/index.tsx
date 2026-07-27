@@ -401,7 +401,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 ) : null}
                 {s.id.startsWith('custom_') && (
                   <Button onPress={() => handleDeleteCustom(s.id)} style={{ padding: 4, marginLeft: 8 }}>
-                    <Text size={16} color="#F44336}>✕</Text>
+                    <Text size={16} color="#F44336">✕</Text>
                   </Button>
                 )}
               </View>
