@@ -70,7 +70,7 @@ export const xunfeiChat = (
     const timeout = setTimeout(() => {
       if (!resolved) {
         resolved = true
-        try { ws.close() } catch {}
+        try { ws.close() } catch { /* WebSocket 可能已关闭，忽略关闭错误 */ }
         reject(new Error('科大讯飞请求超时'))
       }
     }, 60000)
@@ -111,7 +111,7 @@ export const xunfeiChat = (
           clearTimeout(timeout)
           if (!resolved) {
             resolved = true
-            try { ws.close() } catch {}
+            try { ws.close() } catch { /* WebSocket 可能已关闭 */ }
             let errMsg = data.header?.message || '未知错误'
             if (code === 10000 || code === 10001 || code === 10002 || errMsg.includes('鉴权') || errMsg.includes('auth') || errMsg.includes('401')) {
               errMsg = `鉴权失败（错误码 ${code}）：${errMsg}\n\n可能的原因：\n1. 内置服务配额已用完\n2. 服务密钥已过期\n\n建议：点击右上角设置按钮，切换到其他AI服务（如Kimi、通义千问等）并配置自己的API Key`
@@ -138,12 +138,12 @@ export const xunfeiChat = (
           clearTimeout(timeout)
           if (!resolved) {
             resolved = true
-            try { ws.close() } catch {}
+            try { ws.close() } catch { /* WebSocket 可能已关闭 */ }
             resolve({ content: fullContent, toolCalls: toolCallsResult })
           }
         }
       } catch (err) {
-        // 忽略解析错误
+        console.warn('科大讯飞消息解析失败:', (err as Error).message)
       }
     }
 

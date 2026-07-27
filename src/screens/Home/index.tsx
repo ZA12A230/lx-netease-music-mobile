@@ -19,6 +19,7 @@ import WebLoginManager from "@/components/WebLoginManager";
 import MultiPlatformLoginManager from "@/components/MultiPlatformLoginManager";
 import ShareCodeManager from "@/components/ShareCodeManager";
 import ShareCodeImportManager from "@/components/ShareCodeImportManager";
+import PlayerRecoveryManager from "@/components/PlayerRecoveryManager";
 import DownloadBall from "@/components/DownloadBall";
 import YouTubeLoginManager from "@/components/YouTubeLoginManager";
 import VideoPlayerManager from "@/components/VideoPlayerManager";
@@ -86,6 +87,7 @@ export default ({ componentId }: Props) => {
       <MultiPlatformLoginManager />
       <ShareCodeManager />
       <ShareCodeImportManager />
+      <PlayerRecoveryManager />
       {/*<YouTubeLoginManager />*/}
       <VideoPlayerManager />
       <DownloadBall />
