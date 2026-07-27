@@ -33,9 +33,9 @@ import MetadataEditModal, {
 } from '@/components/MetadataEditModal'
 import MusicDownloadModal, { type MusicDownloadModalType } from './MusicDownloadModal'
 import MusicToggleModal, { type MusicToggleModalType } from './MusicToggleModal'
-import {handleShowAlbumDetail, handleShowArtistDetail} from "@/components/OnlineList/listAction.ts";
-import {useSettingValue} from "@/store/setting/hook.ts";
-import {updateSetting} from "@/core/common.ts";
+import {handleShowAlbumDetail, handleShowArtistDetail} from "@/components/OnlineList/listAction";
+import {useSettingValue} from "@/store/setting/hook";
+import {updateSetting} from "@/core/common";
 import {getMvUrl} from "@/utils/musicSdk/wy/mv.js";
 import commonState from '@/store/common/state';
 import SimilarSongsModal, { type SimilarSongsModalType } from '@/components/SimilarSongsModal'

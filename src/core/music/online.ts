@@ -11,7 +11,7 @@ import {
   handleGetOnlinePicUrl,
   getCachedLyricInfo, QUALITY_RANK,
 } from './utils'
-import {toast} from "@/utils/tools.ts"
+import {toast} from "@/utils/tools"
 import {fetchAndApplyDetailedQuality} from "@/utils/musicSdk/wy/musicDetail.js"
 import userState from '@/store/user/state'
 

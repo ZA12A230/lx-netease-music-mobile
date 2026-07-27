@@ -11,7 +11,7 @@ import TipList, { type TipListType } from './TipList'
 import List, { type ListType } from './List'
 import { addHistoryWord, setSearchText as setSearchState } from '@/core/search/search'
 import SonglistDetail from '../../../SonglistDetail'
-import {COMPONENT_IDS} from "@/config/constant.ts"
+import {COMPONENT_IDS} from "@/config/constant"
 
 interface SearchInfo {
   temp_source: LX.OnlineSource

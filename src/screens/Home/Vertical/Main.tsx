@@ -17,8 +17,8 @@ import DailyRec from '../Views/DailyRec'
 import MyPlaylist from '../Views/MyPlaylist'
 import FollowedArtists from '../Views/FollowedArtists'
 import SubscribedAlbums from '../Views/SubscribedAlbums';
-import {NAV_MENUS, type NAV_ID_Type} from "@/config/constant.ts";
-import {useSettingValue} from "@/store/setting/hook.ts";
+import {NAV_MENUS, type NAV_ID_Type} from "@/config/constant";
+import {useSettingValue} from "@/store/setting/hook";
 import PlayHistory from '../Views/PlayHistory'
 import { useTheme } from '@/store/theme/hook'
 import OneDrive from '../Views/OneDrive'

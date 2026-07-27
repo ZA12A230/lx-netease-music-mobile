@@ -170,8 +170,8 @@ const startDownload = async (task: DownloadTask) => {
         toast(`${uploadFileName} 已上传到 OneDrive!`, 'short');
         return;
       } finally {
-        await unlink(task.filePath).catch(() => {});
-        await unlink(lyricPath).catch(() => {});
+        await unlink(task.filePath).catch(() => { console.warn('[OneDrive] 清理临时音频文件失败:', task.filePath); });
+        await unlink(lyricPath).catch(() => { console.warn('[OneDrive] 清理临时歌词文件失败:', lyricPath); });
       }
     }
     try {
@@ -187,6 +187,18 @@ const startDownload = async (task: DownloadTask) => {
     }
   } finally {
     currentDownloadTask = null;
+    // 如果下载失败（status 不是 completed），清理残留的半成品文件
+    const finalTask = downloadState.tasks.find(t => t.id === task.id);
+    if (finalTask && finalTask.status !== 'completed' && finalTask.status !== 'downloading') {
+      try {
+        if (task.filePath) {
+          await unlink(task.filePath);
+          console.log(`[Download] 清理失败下载残留文件: ${task.filePath}`);
+        }
+      } catch (e) {
+        console.warn(`[Download] 清理残留文件失败: ${task.filePath}`, e);
+      }
+    }
   }
 };
 
@@ -228,6 +240,14 @@ const handleMetadata = async (task: DownloadTask, filePath: string) => {
       console.log(e)
       toast('封面写入失败', 'short');
       downloadActions.updateTask(task.id, { metadataStatus: { ...task.metadataStatus, cover: 'fail' } });
+      // 清理可能残留的临时封面文件
+      try {
+        const extension = getFileExtensionFromUrl(await getPicUrl({ musicInfo: task.musicInfo }).catch(() => ''));
+        if (extension) {
+          const picPath = `${downloadDir}/temp.${extension}`;
+          await unlink(picPath).catch(() => {});
+        }
+      } catch { /* 忽略清理失败 */ }
     }
   }
 
@@ -449,8 +469,10 @@ export const removeTask = (id: string) => {
   if (taskIndex > -1) taskQueue.splice(taskIndex, 1);
   // 从store中移除
   downloadActions.removeTask(id);
-  isProcessing = false;
-  processQueue();
+  // 注意：不在此处重置 isProcessing 和调用 processQueue
+  // processQueue 的 finally 块会统一处理队列推进，避免并发竞态
+  // 如果当前没有任务在处理（isProcessing 为 false），手动触发队列
+  if (!isProcessing) processQueue();
 };
 
 

@@ -72,8 +72,7 @@ const diffCurrentMusicInfo = (curMusicInfo: LX.Music.MusicInfo | LX.Download.Lis
   // return curMusicInfo !== playerState.playMusicInfo.musicInfo || playerState.isPlay
   return (
     createGettingUrlId(curMusicInfo) != global.lx.gettingUrlId ||
-    curMusicInfo.id != playerState.playMusicInfo.musicInfo?.id ||
-    playerState.isPlay
+    curMusicInfo.id != playerState.playMusicInfo.musicInfo?.id
   )
 }
 
@@ -82,11 +81,11 @@ const delayRetry = async (
   musicInfo: LX.Music.MusicInfo | LX.Download.ListItem,
   isRefresh = false
 ): Promise<string | null> => {
-  // if (cancelDelayRetry) cancelDelayRetry()
+  if (cancelDelayRetry) cancelDelayRetry()
   return new Promise<string | null>((resolve, reject) => {
     const time = getRandom(2, 6)
     setStatusText(global.i18n.t('player__getting_url_delay_retry', { time }))
-    const tiemout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       getMusicPlayUrl(musicInfo, isRefresh, true)
         .then((result) => {
           cancelDelayRetry = null
@@ -98,7 +97,7 @@ const delayRetry = async (
         })
     }, time * 1000)
     cancelDelayRetry = () => {
-      clearTimeout(tiemout)
+      clearTimeout(timeout)
       cancelDelayRetry = null
       resolve(null)
     }
@@ -174,7 +173,7 @@ export const setMusicUrl = (
     .catch((err: any) => {
       console.log(err)
       setStatusText(err.message as string)
-      global.app_event.error()
+      global.app_event.playerError()
       // addDelayNextTimeout()
     })
     .finally(() => {
@@ -317,8 +316,11 @@ export const handlePlay = async () => {
  */
 export const playList = async (listId: string, index: number) => {
   const prevListId = playerState.playInfo.playerListId
+  const list = getList(listId)
+  const musicInfo = list[index]
+  if (!musicInfo) return // 越界保护
   setPlayListId(listId)
-  setPlayMusicInfo(listId, getList(listId)[index])
+  setPlayMusicInfo(listId, musicInfo)
   if (settingState.setting['player.isAutoCleanPlayedList'] || prevListId != listId)
     clearPlayedList()
   clearTempPlayeList()

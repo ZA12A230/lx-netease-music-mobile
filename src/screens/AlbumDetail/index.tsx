@@ -10,10 +10,10 @@ import PlayerBar from '@/components/player/PlayerBar'
 import { createStyle } from '@/utils/tools'
 import { type ListInfoItem } from '@/store/songlist/state'
 import { playOnlineList } from '@/core/list'
-import {COMPONENT_IDS, LIST_IDS} from "@/config/constant.ts"
+import {COMPONENT_IDS, LIST_IDS} from "@/config/constant"
 import playerState from '@/store/player/state'
 import listState from '@/store/list/state'
-import {usePlayerMusicInfo} from "@/store/player/hook.ts";
+import {usePlayerMusicInfo} from "@/store/player/hook";
 
 export default memo(({ componentId, albumInfo }: { componentId: string; albumInfo: ListInfoItem }) => {
   const [albumDetail, setAlbumDetail] = useState({ info: null, list: [] })

@@ -10,15 +10,19 @@ import ArtistSelectorManager from '@/components/ArtistSelectorManager'
 import settingState from '@/store/setting/state'
 import {useI18n} from "@/lang";
 import {BackHandler} from "react-native";
-import {toast} from "@/utils/tools.ts";
+import {toast} from "@/utils/tools";
 import commonState from '@/store/common/state'
-import {useBackHandler} from "@/utils/hooks/useBackHandler.ts";
+import {useBackHandler} from "@/utils/hooks/useBackHandler";
 
 import { setSearchText as setSearchState } from '@/core/search/search'
-import WebLoginManager from "@/components/WebLoginManager.tsx";
+import WebLoginManager from "@/components/WebLoginManager";
+import MultiPlatformLoginManager from "@/components/MultiPlatformLoginManager";
+import ShareCodeManager from "@/components/ShareCodeManager";
+import ShareCodeImportManager from "@/components/ShareCodeImportManager";
+import PlayerRecoveryManager from "@/components/PlayerRecoveryManager";
 import DownloadBall from "@/components/DownloadBall";
-import YouTubeLoginManager from "@/components/YouTubeLoginManager.tsx";
-import VideoPlayerManager from "@/components/VideoPlayerManager.tsx";
+import YouTubeLoginManager from "@/components/YouTubeLoginManager";
+import VideoPlayerManager from "@/components/VideoPlayerManager";
 interface Props {
   componentId: string
 }
@@ -80,6 +84,10 @@ export default ({ componentId }: Props) => {
       <PageContent>{isHorizontalMode ? <Horizontal componentId={componentId} /> : <Vertical componentId={componentId} />}</PageContent>
       <ArtistSelectorManager />
       <WebLoginManager />
+      <MultiPlatformLoginManager />
+      <ShareCodeManager />
+      <ShareCodeImportManager />
+      <PlayerRecoveryManager />
       {/*<YouTubeLoginManager />*/}
       <VideoPlayerManager />
       <DownloadBall />

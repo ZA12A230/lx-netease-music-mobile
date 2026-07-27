@@ -71,10 +71,32 @@ declare global {
     showArtistSelector: (artists: Artist[], onSelect: (artist: Artist) => void) => void;
     triggerSearch: (text: string) => void;
     'wy-cookie-set': (cookie: string) => void
+    'tx-cookie-set': (cookie: string) => void
+    'kg-cookie-set': (cookie: string) => void
+    'kw-cookie-set': (cookie: string) => void
+    'mg-cookie-set': (cookie: string) => void
     'yt-cookie-set': (cookie: string) => void
     showWebLogin: () => void
+    showMultiPlatformLogin: (config: {
+      platformId: string
+      loginUrl: string
+      successUrlFlag: string
+      eventName: string
+      api: any
+      platformName?: string
+    }) => void
     showYouTubeLogin: () => void
     showVideoPlayer: (url: string) => void
+    importShareCode: (playlist: {
+      name: string
+      songs: Array<{
+        name: string
+        singer: string
+        source: string
+        songId: string | number
+      }>
+      timestamp: number
+    }) => void
   }
   var list_event: ListEventTypes
   var dislike_event: DislikeEventTypes

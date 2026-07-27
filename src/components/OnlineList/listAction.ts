@@ -13,7 +13,7 @@ import { httpFetch } from '@/utils/request'
 import musicDetailApi from '@/utils/musicSdk/wy/musicDetail'
 import userState from '@/store/user/state'
 import {weapi} from "@/utils/musicSdk/wy/utils/crypto.js";
-import {addWyLikedSong, removeWyLikedSong} from "@/store/user/action.ts";
+import {addWyLikedSong, removeWyLikedSong} from "@/store/user/action";
 import {navigations} from "@/navigation";
 import commonState from '@/store/common/state'
 import wyApi from '@/utils/musicSdk/wy/user'

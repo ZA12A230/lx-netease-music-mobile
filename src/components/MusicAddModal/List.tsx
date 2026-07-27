@@ -10,7 +10,7 @@ import { useTheme } from '@/store/theme/hook'
 import { useI18n } from '@/lang'
 import { createStyle } from '@/utils/tools'
 import { scaleSizeW } from '@/utils/pixelRatio'
-import {useWySubscribedPlaylists, useWyUid} from "@/store/user/hook.ts";
+import {useWySubscribedPlaylists, useWyUid} from "@/store/user/hook";
 
 const styles = createStyle({
   list: {

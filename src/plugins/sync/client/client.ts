@@ -47,7 +47,8 @@ const heartbeatTools = {
     // Delay should be equal to the interval at which your server
     // sends out pings plus a conservative assumption of the latency.
     this.pingTimeout = setTimeout(() => {
-      client?.close()
+      // 使用 4001 表示心跳超时，避免被 close 事件当作 normal/failed 而不重连
+      client?.close(4001)
     }, 30000 + 1000)
   },
   reConnnect() {

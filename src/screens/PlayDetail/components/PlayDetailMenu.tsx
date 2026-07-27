@@ -3,7 +3,7 @@ import { useI18n } from '@/lang'
 import Menu, { type MenuType, type Position, type Menus } from '@/components/common/Menu'
 import settingState from '@/store/setting/state'
 import userState from '@/store/user/state'
-import {useSettingValue} from "@/store/setting/hook.ts";
+import {useSettingValue} from "@/store/setting/hook";
 import { isOneDriveMusicInfo } from '@/core/oneDrive/utils'
 
 export interface SelectInfo {

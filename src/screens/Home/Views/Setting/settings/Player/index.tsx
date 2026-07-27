@@ -12,6 +12,9 @@ import IsShowLyricTranslation from './IsShowLyricTranslation'
 import IsShowLyricRoma from './IsShowLyricRoma'
 import IsS2T from './IsS2T'
 import MaxCache from './MaxCache'
+import SleepTimer from './SleepTimer'
+import Equalizer from './Equalizer'
+import StatsReport from './StatsReport'
 import { useI18n } from '@/lang'
 
 export default memo(() => {
@@ -29,6 +32,9 @@ export default memo(() => {
       <IsS2T />
       <MaxCache />
       <PlayHighQuality />
+      <SleepTimer />
+      <Equalizer />
+      <StatsReport />
     </Section>
   )
 })

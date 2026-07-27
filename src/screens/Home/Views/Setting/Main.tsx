@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
 
 import Basic from './settings/Basic'
+import Account from './settings/Account'
 import Player from './settings/Player'
 import LyricDesktop from './settings/LyricDesktop'
 import Search from './settings/Search'
@@ -14,6 +15,7 @@ import About from './settings/About'
 
 export const SETTING_SCREENS = [
   'basic',
+  'account',
   'player',
   'lyric_desktop',
   // 'search',
@@ -70,6 +72,8 @@ const Main = forwardRef<MainType, {}>((props, ref) => {
         return <Version />
       case 'about':
         return <About />
+      case 'account':
+        return <Account />
       case 'basic':
       default:
         return <Basic />

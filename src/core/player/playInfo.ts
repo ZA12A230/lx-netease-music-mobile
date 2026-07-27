@@ -156,8 +156,9 @@ export const setPlayMusicInfo = (
     const { playIndex, playerPlayIndex } = getPlayIndex(listId, musicInfo, isTempPlay)
 
     playerActions.updatePlayIndex(playIndex, playerPlayIndex)
-    global.app_event.musicToggled()
   }
+  // 统一触发 musicToggled 事件，确保停止播放时也重置 retryNum 等状态
+  global.app_event.musicToggled()
 }
 
 export const getList = (listId: string | null): LX.Music.MusicInfo[] | LX.Download.ListItem[] => {

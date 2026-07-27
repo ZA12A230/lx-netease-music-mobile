@@ -2,7 +2,7 @@ import { getListMusics } from '@/core/list';
 import listState from '@/store/list/state';
 import settingState from '@/store/setting/state';
 import { LIST_IDS } from '@/config/constant';
-import {getPlayHistory, getUserApiList, getUserApiScript} from "@/utils/data.ts";
+import {getPlayHistory, getUserApiList, getUserApiScript} from "@/utils/data";
 import { normalizeDownloadTasksForSync } from '@/utils/data/download';
 import downloadState from '@/store/download/state';
 

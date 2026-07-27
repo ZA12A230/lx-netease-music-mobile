@@ -9,6 +9,7 @@ import { updateScrobbleInfo } from '@/core/player/scrobble' // [修改] 从新�
 
 export default () => {
   let retryNum = 0
+  let prevErrorMusicId: string | null = null
   let prevTimeoutId: string | null = null
   let loadingTimeout: number | null = null
   let delayNextTimeout: number | null = null
@@ -90,6 +91,14 @@ export default () => {
     if (!playerState.musicInfo.id) return
     clearLoadingTimeout()
     if (global.lx.isPlayedStop) return
+
+    // 检查音乐是否切换，切换则重置 retryNum
+    const currentMusicId = playerState.playMusicInfo.musicInfo?.id ?? null
+    if (prevErrorMusicId !== currentMusicId) {
+      retryNum = 0
+      prevErrorMusicId = currentMusicId
+    }
+
     if (playerState.playMusicInfo.musicInfo && retryNum < 2) {
       // 若音频URL无效则尝试刷新2次URL
       let musicInfo = playerState.playMusicInfo.musicInfo
@@ -98,9 +107,10 @@ export default () => {
           if (position) setNowPlayTime(position)
         })
         .finally(() => {
-          if (playerState.playMusicInfo.musicInfo !== musicInfo) return
+          const current = playerState.playMusicInfo.musicInfo
+          if (current !== musicInfo || !current) return
           retryNum++
-          setMusicUrl(playerState.playMusicInfo.musicInfo, true)
+          setMusicUrl(current, true)
           setStatusText(global.i18n.t('player__refresh_url'))
         })
       return
@@ -129,6 +139,11 @@ export default () => {
   }
 
   const handleStop = () => {
+    retryNum = 0
+    prevErrorMusicId = null
+    prevTimeoutId = null
+    clearDelayNextTimeout()
+    clearLoadingTimeout()
   }
 
   global.app_event.on('playerLoadstart', handleLoadstart)

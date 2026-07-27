@@ -12,8 +12,8 @@ import { Icon } from '@/components/common/Icon'
 import { navigations } from '@/navigation'
 import commonState from '@/store/common/state'
 import { usePlayerMusicInfo } from '@/store/player/hook'
-import PlayerPlaylist, { PlayerPlaylistType } from '@/components/player/PlayerPlaylist.tsx'
-import MiniProgressBar from "@/components/player/PlayerBar/components/MiniProgressBar.tsx"
+import PlayerPlaylist, { PlayerPlaylistType } from '@/components/player/PlayerPlaylist'
+import MiniProgressBar from "@/components/player/PlayerBar/components/MiniProgressBar"
 import playerState from '@/store/player/state'
 import { LIST_IDS } from '@/config/constant'
 

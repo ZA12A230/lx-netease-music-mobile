@@ -9,8 +9,8 @@ import listState from '@/store/list/state'
 import userState from '@/store/user/state'
 import {COMPONENT_IDS, LIST_IDS, type NAV_ID_Type} from '@/config/constant'
 import {navigations} from "@/navigation";
-import {getDailyRecCache} from "@/utils/data.ts";
-import {toast} from "@/utils/tools.ts";
+import {getDailyRecCache} from "@/utils/data";
+import {toast} from "@/utils/tools";
 import { isOneDriveMusicInfo } from '@/core/oneDrive/utils'
 
 // {

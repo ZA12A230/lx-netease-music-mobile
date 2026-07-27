@@ -16,6 +16,10 @@ const defaultSetting: LX.AppSetting = {
   'common.wy_cookie': '',
   'common.wy_serpapi_key': '',
   'common.yt_cookie': '',
+  'common.kg_cookie': '',
+  'common.kw_cookie': '',
+  'common.tx_cookie': '',
+  'common.mg_cookie': '',
   'common.alwaysKeepStatusbarHeight': false,
 
   'common.navStatus': {

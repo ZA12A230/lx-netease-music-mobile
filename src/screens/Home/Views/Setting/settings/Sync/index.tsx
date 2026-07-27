@@ -22,7 +22,7 @@ import {
   manualUploadLists,
   manualDownloadLists,
 } from '@/core/sync/webdavSync';
-import IsEnable from "@/screens/Home/Views/Setting/settings/Sync/IsEnable.tsx";
+import IsEnable from "@/screens/Home/Views/Setting/settings/Sync/IsEnable";
 
 export default memo(() => {
   const t = useI18n();

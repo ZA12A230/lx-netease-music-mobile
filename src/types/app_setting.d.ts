@@ -1,5 +1,5 @@
 import type { I18n } from '@/lang/i18n'
-import {NAV_ID_Type} from "@/config/constant.ts";
+import {NAV_ID_Type} from "@/config/constant";
 
 declare global {
   namespace LX {
@@ -75,6 +75,14 @@ declare global {
       'common.wy_cookie': string
       'common.wy_serpapi_key': string
       'common.yt_cookie': string
+
+      /**
+       * 多平台登录 Cookie
+       */
+      'common.kg_cookie': string
+      'common.kw_cookie': string
+      'common.tx_cookie': string
+      'common.mg_cookie': string
 
       /**
        * 总是保留状态栏高度

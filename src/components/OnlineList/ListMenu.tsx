@@ -3,7 +3,7 @@ import { useI18n } from '@/lang'
 import settingState from '@/store/setting/state'
 import Menu, { type MenuType, type Position } from '@/components/common/Menu'
 import { hasDislike } from '@/core/dislikeList'
-import {useSettingValue} from "@/store/setting/hook.ts";
+import {useSettingValue} from "@/store/setting/hook";
 
 export interface SelectInfo {
   musicInfo: LX.Music.MusicInfoOnline

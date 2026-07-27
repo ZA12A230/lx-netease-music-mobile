@@ -20,11 +20,11 @@ import { addWySubscribedPlaylist, removeWySubscribedPlaylist } from '@/store/use
 import { COMPONENT_IDS } from '@/config/constant'
 import Menu, { type MenuType } from '@/components/common/Menu'
 import PlaylistEditModal, { type PlaylistEditModalType } from '../Home/Views/MyPlaylist/PlaylistEditModal'
-import { type DetailInfo } from "@/screens/SonglistDetail/Header.tsx"
+import { type DetailInfo } from "@/screens/SonglistDetail/Header"
 import playerState from '@/store/player/state'
 import { LIST_IDS } from '@/config/constant'
 import listState from '@/store/list/state'
-import {usePlayerMusicInfo} from "@/store/player/hook.ts"
+import {usePlayerMusicInfo} from "@/store/player/hook"
 import MusicInfoOnline = LX.Music.MusicInfoOnline
 
 const IMAGE_WIDTH = scaleSizeW(70)

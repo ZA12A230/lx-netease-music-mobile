@@ -18,6 +18,9 @@ export class StateEvent extends Event {
   configUpdated(keys: Array<keyof LX.AppSetting>, setting: Partial<LX.AppSetting>) {
     this.emit('configUpdated', keys, setting)
   }
+  wyUidChanged() {
+    this.emit('wyUidChanged')
+  }
   wyLikedListChanged() {
     this.emit('wyLikedListChanged')
   }
