@@ -419,6 +419,38 @@ declare global {
       'sync.webdav.password': string;
       'sync.webdav.path': string;
       'sync.webdav.lastSyncTimeLists': number;
+
+      // ============ 开发者模式 ============
+      'developer.enabled': boolean
+      'developer.showPerformanceOverlay': boolean
+      'developer.showLogOverlay': boolean
+      'developer.verboseLog': boolean
+      'developer.enableNetworkInspector': boolean
+      'developer.testApiEndpoint': string
+      'developer.crashReport': boolean
+      'developer.debugMode': boolean
+
+      // ============ 实验室功能 ============
+      'lab.enabled': boolean
+      'lab.smartMoodRecommend': boolean
+      'lab.musicStatsDashboard': boolean
+      'lab.djMode': boolean
+      'lab.moodDiary': boolean
+      'lab.gestureControl': boolean
+      'lab.lyricTimelineEditor': boolean
+      'lab.crossfade': boolean
+      'lab.spectrumVisualizer': boolean
+      'lab.aiPlaylistGenerator': boolean
+      // 实验室扩展功能（V2新增）
+      'lab.karaokeMode': boolean
+      'lab.similarityRecommend': boolean
+      'lab.listeningChallenge': boolean
+      'lab.musicMap': boolean
+      'lab.smartSkip': boolean
+      'lab.audioEnhancer': boolean
+      'lab.listeningGoals': boolean
+      'lab.musicLearning': boolean
+      'lab.shareCard': boolean
     }
   }
 }

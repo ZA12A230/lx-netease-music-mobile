@@ -252,6 +252,8 @@
   "setting__other_resource_cache": "資源快取管理（包括歌曲、圖片快取）",
   "setting_about": "關於 LX-N Music",
   "setting_backup": "備份與復原",
+  "setting_developer": "開發者模式",
+  "setting_lab": "實驗室",
   "setting_backup_all": "所有資料（歌單、播放歷史、下載記錄、設定與自訂音源）",
   "setting_backup_all_export": "匯出",
   "setting_backup_all_export_desc": "選取備份儲存位置",

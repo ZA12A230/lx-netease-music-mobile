@@ -252,6 +252,8 @@
   "setting_about": "About LX-N Music",
   "setting_account": "Account",
   "setting_backup": "Backup & Restore",
+  "setting_developer": "Developer",
+  "setting_lab": "Lab",
   "setting_backup_all": "All data (playlists, play history, download records, settings, and custom sources)",
   "setting_backup_all_export": "Export",
   "setting_backup_all_export_desc": "Save the backup to...",

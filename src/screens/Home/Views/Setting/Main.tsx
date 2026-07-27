@@ -12,6 +12,8 @@ import Backup from './settings/Backup'
 import Other from './settings/Other'
 import Version from './settings/Version'
 import About from './settings/About'
+import Developer from './settings/Developer'
+import Lab from './settings/Lab'
 
 export const SETTING_SCREENS = [
   'basic',
@@ -24,6 +26,8 @@ export const SETTING_SCREENS = [
   'sync',
   'backup',
   'other',
+  'lab',
+  'developer',
   'version',
   'about',
 ] as const
@@ -68,6 +72,10 @@ const Main = forwardRef<MainType, {}>((props, ref) => {
         return <Backup />
       case 'other':
         return <Other />
+      case 'lab':
+        return <Lab />
+      case 'developer':
+        return <Developer />
       case 'version':
         return <Version />
       case 'about':

@@ -129,6 +129,38 @@ const defaultSetting: LX.AppSetting = {
   'theme.fontShadow': false,
   'theme.customBgPicPath': '',
   'theme.picOpacity': 76,
+
+  // ============ 开发者模式 ============
+  'developer.enabled': false,
+  'developer.showPerformanceOverlay': false,
+  'developer.showLogOverlay': false,
+  'developer.verboseLog': false,
+  'developer.enableNetworkInspector': false,
+  'developer.testApiEndpoint': '',
+  'developer.crashReport': true,
+  'developer.debugMode': false,
+
+  // ============ 实验室功能 ============
+  'lab.enabled': false,
+  'lab.smartMoodRecommend': false,
+  'lab.musicStatsDashboard': false,
+  'lab.djMode': false,
+  'lab.moodDiary': false,
+  'lab.gestureControl': false,
+  'lab.lyricTimelineEditor': false,
+  'lab.crossfade': false,
+  'lab.spectrumVisualizer': false,
+  'lab.aiPlaylistGenerator': false,
+  // 实验室扩展功能（V2新增）
+  'lab.karaokeMode': false,
+  'lab.similarityRecommend': false,
+  'lab.listeningChallenge': false,
+  'lab.musicMap': false,
+  'lab.smartSkip': false,
+  'lab.audioEnhancer': false,
+  'lab.listeningGoals': false,
+  'lab.musicLearning': false,
+  'lab.shareCard': false,
 }
 
 // 使用新年皮肤
