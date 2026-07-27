@@ -276,7 +276,13 @@ export async function manualDownloadSettingsAndApis() {
     // 下载并应用设置
     const remoteSettingsContent = await webdav.downloadFile(remoteSettingsPath);
     if (remoteSettingsContent) {
-      const remoteSettingsData = JSON.parse(remoteSettingsContent);
+      let remoteSettingsData;
+      try {
+        remoteSettingsData = JSON.parse(remoteSettingsContent);
+      } catch {
+        toast('云端设置文件已损坏，请重新上传');
+        return;
+      }
       updateSetting(filterSensitiveSettingsForSync(remoteSettingsData.data));
     } else {
       toast('云端未找到设置文件，跳过设置同步');
@@ -285,7 +291,13 @@ export async function manualDownloadSettingsAndApis() {
     // 下载并应用自定义音源
     const remoteUserApisContent = await webdav.downloadFile(remoteUserApisPath);
     if (remoteUserApisContent) {
-      const remoteApisData = JSON.parse(remoteUserApisContent);
+      let remoteApisData;
+      try {
+        remoteApisData = JSON.parse(remoteUserApisContent);
+      } catch {
+        toast('云端音源文件已损坏，请重新上传');
+        return;
+      }
       await overwriteUserApis(remoteApisData.data);
     } else {
       toast('云端未找到自定义音源文件，跳过音源同步');
@@ -356,7 +368,13 @@ export async function manualDownloadLists() {
     const remoteListsPath = getRemoteListsFilePath();
     const remoteListsContent = await webdav.downloadFile(remoteListsPath);
     if (remoteListsContent) {
-      const remoteData = normalizeRemoteListsData(JSON.parse(remoteListsContent));
+      let remoteData;
+      try {
+        remoteData = normalizeRemoteListsData(JSON.parse(remoteListsContent));
+      } catch {
+        toast('云端歌单文件已损坏，请重新同步');
+        return;
+      }
       await overwriteListFull(remoteData.data);
       await applySyncedExtraData(remoteData);
       await clearOperationQueue();
@@ -399,7 +417,14 @@ export async function triggerWebDAVSync(isManual = false) {
       await clearOperationQueue();
       if (isManual) toast('歌单上传成功！');
     } else {
-      const remoteData = normalizeRemoteListsData(JSON.parse(remoteListsContent));
+      let remoteData;
+      try {
+        remoteData = normalizeRemoteListsData(JSON.parse(remoteListsContent));
+      } catch {
+        log.error('[WebDAV Sync] 远端歌单文件已损坏，无法解析');
+        toast('云端歌单文件已损坏，请重新上传');
+        return;
+      }
       const remoteTimestamp = remoteData.lastModified;
       const localTimestamp = settingState.setting['sync.webdav.lastSyncTimeLists'] ?? 0;
 
