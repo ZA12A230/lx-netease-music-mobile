@@ -451,6 +451,20 @@ declare global {
       'lab.listeningGoals': boolean
       'lab.musicLearning': boolean
       'lab.shareCard': boolean
+      // 实验室V3扩展功能
+      'lab.collaborativeFilter': boolean
+      'lab.playlistOrganizer': boolean
+      'lab.musicRadar': boolean
+      'lab.lyricTranslator': boolean
+      'lab.timeMachine': boolean
+      'lab.smartSleepTimer': boolean
+      'lab.meditationMode': boolean
+      'lab.runningMode': boolean
+      'lab.emotionAnalysis': boolean
+      'lab.musicKnowledge': boolean
+      'lab.artistGraph': boolean
+      'lab.playlistRepair': boolean
+      'lab.musicQuiz': boolean
     }
   }
 }

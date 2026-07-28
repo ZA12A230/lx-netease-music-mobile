@@ -161,6 +161,20 @@ const defaultSetting: LX.AppSetting = {
   'lab.listeningGoals': false,
   'lab.musicLearning': false,
   'lab.shareCard': false,
+  // 实验室V3扩展功能
+  'lab.collaborativeFilter': false,
+  'lab.playlistOrganizer': false,
+  'lab.musicRadar': false,
+  'lab.lyricTranslator': false,
+  'lab.timeMachine': false,
+  'lab.smartSleepTimer': false,
+  'lab.meditationMode': false,
+  'lab.runningMode': false,
+  'lab.emotionAnalysis': false,
+  'lab.musicKnowledge': false,
+  'lab.artistGraph': false,
+  'lab.playlistRepair': false,
+  'lab.musicQuiz': false,
 }
 
 // 使用新年皮肤

@@ -21,6 +21,9 @@ const CATEGORY_NAMES: Record<LabFeature['category'], string> = {
   recommendation: '推荐',
   ui: '界面',
   ai: 'AI 功能',
+  tool: '实用工具',
+  game: '游戏',
+  lifestyle: '生活方式',
 }
 
 const RISK_META: Record<LabFeature['risk'], { label: string; color: string }> = {
