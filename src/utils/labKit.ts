@@ -340,6 +340,39 @@ export const LAB_FEATURES: LabFeature[] = [
     risk: 'low',
     category: 'ai',
   },
+  // ============ V6 新增功能 ============
+  {
+    key: 'lab.musicNovel',
+    name: '音乐小说',
+    description: 'AI根据歌单生成连载小说，每章融入一首歌，形成完整故事线',
+    icon: '📚',
+    risk: 'medium',
+    category: 'ai',
+  },
+  {
+    key: 'lab.smartRadio',
+    name: '智能电台',
+    description: '8种预置电台+自定义歌手电台，基于曲风/情绪自动播放',
+    icon: '📻',
+    risk: 'low',
+    category: 'recommendation',
+  },
+  {
+    key: 'lab.playbackAnalytics',
+    name: '播放行为分析',
+    description: '深度分析播放模式、时段偏好、重复率，可视化你的听歌习惯',
+    icon: '📊',
+    risk: 'low',
+    category: 'ui',
+  },
+  {
+    key: 'lab.lyricTranslatePK',
+    name: '歌词翻译PK',
+    description: '翻译歌词与AI对比，学习外语表达，支持8种目标语言',
+    icon: '🌐',
+    risk: 'low',
+    category: 'ai',
+  },
 ]
 
 /** 检查实验室功能是否启用 */

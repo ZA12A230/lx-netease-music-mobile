@@ -476,6 +476,11 @@ declare global {
       'lab.moodCalendar': boolean
       'lab.lyricFlashcard': boolean
       'lab.playlistStory': boolean
+      // 实验室V6扩展功能
+      'lab.musicNovel': boolean
+      'lab.smartRadio': boolean
+      'lab.playbackAnalytics': boolean
+      'lab.lyricTranslatePK': boolean
     }
   }
 }
