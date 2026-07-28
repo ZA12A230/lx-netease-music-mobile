@@ -307,6 +307,39 @@ export const LAB_FEATURES: LabFeature[] = [
     risk: 'low',
     category: 'ui',
   },
+  // ============ V5 新增功能 ============
+  {
+    key: 'lab.musicPK',
+    name: '音乐PK对战',
+    description: '基于歌单的双人音乐知识对战游戏，支持3种难度和连击奖励',
+    icon: '⚔️',
+    risk: 'low',
+    category: 'game',
+  },
+  {
+    key: 'lab.moodCalendar',
+    name: '心情日历',
+    description: '按日历展示每日心情热力图，5级心情等级和趋势分析',
+    icon: '📅',
+    risk: 'low',
+    category: 'ui',
+  },
+  {
+    key: 'lab.lyricFlashcard',
+    name: '歌词学习闪卡',
+    description: '从歌词提取生词制作闪卡，SM-2算法+艾宾浩斯记忆法复习',
+    icon: '📇',
+    risk: 'low',
+    category: 'ai',
+  },
+  {
+    key: 'lab.playlistStory',
+    name: '歌单故事生成器',
+    description: 'AI根据歌单创作故事，将歌曲名巧妙融入情节，8种风格',
+    icon: '📖',
+    risk: 'low',
+    category: 'ai',
+  },
 ]
 
 /** 检查实验室功能是否启用 */

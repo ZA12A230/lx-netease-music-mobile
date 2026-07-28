@@ -107,7 +107,7 @@ ${lyric}
   "culturalNote": "文化背景"
 }`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     if (!result) return null
 
     let parsed: any

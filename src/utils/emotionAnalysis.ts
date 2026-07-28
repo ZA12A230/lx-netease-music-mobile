@@ -74,7 +74,7 @@ export const analyzeSongEmotion = async (song: MusicInfo): Promise<EmotionAnalys
   "tags": ["标签1", "标签2"]
 }`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     if (!result) {
       // 降级：使用规则推断
       return inferEmotionFromRules(song)

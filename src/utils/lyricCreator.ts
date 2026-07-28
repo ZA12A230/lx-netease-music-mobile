@@ -123,7 +123,7 @@ ${keywords?.length ? `包含以下关键词: ${keywords.join(', ')}` : ''}
 
 请直接输出歌词内容，不要其他说明。`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     addDevLog('info', 'LyricCreator', `AI生成歌词: 主题=${theme}, 风格=${style}`)
     return result?.trim() || null
   } catch (e: any) {
@@ -141,7 +141,7 @@ ${existingLyric}
 
 请直接输出续写内容，约4-8行。`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     return result?.trim() || null
   } catch (e: any) {
     addDevLog('error', 'LyricCreator', `续写失败: ${e?.message}`)
@@ -161,7 +161,7 @@ ${lyric}
 
 请直接输出改写后的歌词。`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     return result?.trim() || null
   } catch (e: any) {
     addDevLog('error', 'LyricCreator', `改写失败: ${e?.message}`)
@@ -191,7 +191,7 @@ export const generateInspiration = async (theme: string): Promise<InspirationPro
 
   try {
     const prompt = `为主题"${theme}"生成3个歌词创作灵感，每个灵感包含意象或隐喻。直接输出，每行一个。`
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     if (result) {
       const lines = result.split('\n').filter((l) => l.trim()).slice(0, 3)
       for (const line of lines) {

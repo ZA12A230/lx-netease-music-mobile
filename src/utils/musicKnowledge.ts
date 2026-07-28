@@ -109,7 +109,7 @@ export const getSongKnowledge = async (song: MusicInfo): Promise<SongKnowledge |
   "similarSongs": [{"name": "歌名", "singer": "歌手", "reason": "推荐原因"}]
 }`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     if (!result) return null
 
     let parsed: any
@@ -174,7 +174,7 @@ export const getArtistKnowledge = async (artistName: string): Promise<ArtistKnow
   "trivia": ["趣闻"]
 }`
 
-    const result = await chat(prompt)
+    const result = await chat(prompt, [])
     if (!result) return null
 
     let parsed: any

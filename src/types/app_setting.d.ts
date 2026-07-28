@@ -471,6 +471,11 @@ declare global {
       'lab.voiceCommand': boolean
       'lab.playlistMashup': boolean
       'lab.musicTimeline': boolean
+      // 实验室V5扩展功能
+      'lab.musicPK': boolean
+      'lab.moodCalendar': boolean
+      'lab.lyricFlashcard': boolean
+      'lab.playlistStory': boolean
     }
   }
 }

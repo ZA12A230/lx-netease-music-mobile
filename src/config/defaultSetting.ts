@@ -181,6 +181,11 @@ const defaultSetting: LX.AppSetting = {
   'lab.voiceCommand': false,
   'lab.playlistMashup': false,
   'lab.musicTimeline': false,
+  // 实验室V5扩展功能
+  'lab.musicPK': false,
+  'lab.moodCalendar': false,
+  'lab.lyricFlashcard': false,
+  'lab.playlistStory': false,
 }
 
 // 使用新年皮肤
