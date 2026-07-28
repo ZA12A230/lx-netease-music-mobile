@@ -120,12 +120,20 @@ export const getMusicUrl = async ({
         try {
           const { url } = await wySdk.cookie.getMusicUrl(currentMusicInfo, targetQuality).promise;
           if (url) {
-            void saveMusicUrl(currentMusicInfo, targetQuality, url);
+            void saveMusicUrl(musicInfo, targetQuality, url);
             if (currentMusicInfo.id !== musicInfo.id) void saveMusicUrl(musicInfo, targetQuality, url);
             return url;
           }
         } catch (cookieError) {
           console.log('Cookie fallback also failed', cookieError);
+        }
+      }
+      // 所有方法都失败，尝试试听接口兜底
+      if (isTrialEnabled()) {
+        const trialResult = await getTrialUrl(musicInfo)
+        if (trialResult) {
+          void saveMusicUrl(musicInfo, '128k', trialResult.url)
+          return trialResult.url
         }
       }
       throw apiError;
