@@ -178,11 +178,14 @@ export const setMusicUrl = (
         setStatusText(global.i18n.t('player__getting_url_failed') || '获取播放链接失败，请检查网络')
       } else if (errMsg.includes('vip') || errMsg.includes('VIP') || errMsg.includes('copyright')) {
         setStatusText(global.i18n.t('player__error_vip') || '此歌曲需要VIP或无版权')
+      } else if (errMsg.includes('source') || errMsg.includes('Api is not found') || errMsg.includes('toggle_source_failed')) {
+        setStatusText('音源未配置或已失效，请到设置→基本设置→自定义音源导入音源')
       } else {
         setStatusText(global.i18n.t('player__error') || '音频加载出错')
       }
       global.app_event.playerError()
-      // addDelayNextTimeout()
+      // 播放失败后自动切下一首（5秒后）
+      addDelayNextTimeout()
     })
     .finally(() => {
       if (musicInfo === playerState.playMusicInfo.musicInfo) {

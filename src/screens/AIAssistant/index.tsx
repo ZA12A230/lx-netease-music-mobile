@@ -139,12 +139,12 @@ const MusicAssistant = () => {
       <View style={[styles.msgRow, isUser ? styles.msgRowUser : styles.msgRowAI]}>
         <View style={styles.msgAvatarWrap}>
           {isUser ? (
-            <View style={[styles.msgAvatar, { backgroundColor: theme['c-primary-light-400-alpha-600'] }]}>
-              <Text size={14} color="#fff">👤</Text>
+            <View style={[styles.msgAvatar, { backgroundColor: theme['c-primary-light-400-alpha-800'] }]}>
+              <Text size={14} color={theme['c-primary-light-1000']}>👤</Text>
             </View>
           ) : (
             <View style={[styles.msgAvatar, { backgroundColor: theme['c-primary'] }]}>
-              <Text size={14} color="#fff">🎵</Text>
+              <Icon name="music_time" size={14} color={theme['c-primary-light-1000']} />
             </View>
           )}
         </View>
@@ -152,7 +152,7 @@ const MusicAssistant = () => {
           styles.msgBubble,
           isUser
             ? { backgroundColor: theme['c-primary'], borderColor: theme['c-primary'] }
-            : { backgroundColor: theme['c-primary-light-100-alpha-80'], borderColor: theme['c-primary-light-400-alpha-40'] },
+            : { backgroundColor: theme['c-primary-light-100-alpha-900'], borderColor: theme['c-primary-light-400-alpha-700'] },
         ]}>
           {item.loading ? (
             <View style={styles.loadingWrap}>
@@ -160,7 +160,7 @@ const MusicAssistant = () => {
               <Text size={14} color={theme['c-font-label']} style={{ marginLeft: 8 }}>思考中...</Text>
             </View>
           ) : (
-            <Text style={styles.msgText} color={isUser ? '#fff' : theme['c-font']}>
+            <Text style={styles.msgText} color={isUser ? theme['c-primary-light-1000'] : theme['c-font']}>
               {item.content}
             </Text>
           )}
@@ -171,8 +171,6 @@ const MusicAssistant = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme['c-background'] }]}>
-      {/* 顶部装饰条 */}
-      <View style={[styles.topGradient, { backgroundColor: theme['c-primary'] }]} />
 
       {/* 顶部栏 */}
       <View style={[
@@ -185,19 +183,19 @@ const MusicAssistant = () => {
       ]}>
         <View style={styles.headerLeft}>
           <View style={[styles.logoIcon, { backgroundColor: theme['c-primary'] }]}>
-            <Icon name="message-circle" color="#fff" size={20} />
+            <Icon name="message-circle" color={theme['c-primary-light-1000']} size={20} />
           </View>
           <Text style={styles.headerTitle} size={18} color={theme['c-font']}>
             {t('nav_music_assistant')}
           </Text>
         </View>
-        <Button onPress={() => setShowSettings(true)} style={[styles.headerBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'] }]}>
+        <Button onPress={() => setShowSettings(true)} style={[styles.headerBtn, { backgroundColor: theme['c-primary-light-100-alpha-700'] }]}>
           <Icon name="setting" color={theme['c-font']} size={22} />
         </Button>
       </View>
 
       {/* 用量显示 */}
-      <View style={[styles.quotaBar, { backgroundColor: theme['c-primary-light-100-alpha-20'] }]}>
+      <View style={[styles.quotaBar, { backgroundColor: theme['c-primary-light-100-alpha-900'] }]}>
         <Text size={12} color={theme['c-font-label']}>
           {authorized ? '✓ 已授权无限使用' : remaining >= 0 ? `免费剩余：${remaining} 次` : ''}
           {'  |  '}{getPresetServices().find((s) => s.id === getActiveServiceId())?.name || '未知'}
@@ -216,8 +214,8 @@ const MusicAssistant = () => {
 
       {/* 输入区 */}
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <View style={[styles.inputBar, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-100-alpha-40'] }]}>
-          <View style={[styles.inputWrap, { backgroundColor: theme['c-primary-light-100-alpha-40'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+        <View style={[styles.inputBar, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-100-alpha-700'] }]}>
+          <View style={[styles.inputWrap, { backgroundColor: theme['c-primary-light-100-alpha-700'], borderColor: theme['c-primary-light-400-alpha-700'] }]}>
             <TextInput
               style={[styles.input, { color: theme['c-font'] }]}
               value={input}
@@ -235,13 +233,13 @@ const MusicAssistant = () => {
             onPress={handleSend}
             disabled={sending || !input.trim()}
             style={[styles.sendBtn, { 
-              backgroundColor: sending || !input.trim() ? theme['c-primary-light-100-alpha-40'] : theme['c-primary'],
+              backgroundColor: sending || !input.trim() ? theme['c-primary-light-100-alpha-700'] : theme['c-primary'],
             }]}
           >
             {sending ? (
-              <ActivityIndicator color="#fff" size="small" />
+              <ActivityIndicator color={theme['c-primary-light-1000']} size="small" />
             ) : (
-              <Icon name="send" color="#fff" size={20} />
+              <Icon name="send" color={theme['c-primary-light-1000']} size={20} />
             )}
           </TouchableOpacity>
         </View>
@@ -255,7 +253,7 @@ const MusicAssistant = () => {
       {/* 密码授权弹窗 */}
       <Modal visible={showAuth} transparent animationType="fade" onRequestClose={() => setShowAuth(false)}>
         <View style={styles.authOverlay}>
-          <View style={[styles.authBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+          <View style={[styles.authBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-700'] }]}>
             <Text size={20} color={theme['c-font']} style={styles.authTitle} fontWeight="bold">
               🔐 管理员授权
             </Text>
@@ -263,7 +261,7 @@ const MusicAssistant = () => {
               免费对话次数已用完，请输入管理员密码继续使用
             </Text>
             <TextInput
-              style={[styles.authInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-600'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+              style={[styles.authInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-800'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
               value={authPwd}
               onChangeText={setAuthPwd}
               placeholder="请输入管理员密码"
@@ -272,11 +270,11 @@ const MusicAssistant = () => {
               onSubmitEditing={handleAuth}
             />
             <View style={styles.authBtns}>
-              <Button onPress={() => setShowAuth(false)} style={[styles.authBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'] }]}>
+              <Button onPress={() => setShowAuth(false)} style={[styles.authBtn, { backgroundColor: theme['c-primary-light-100-alpha-700'] }]}>
                 <Text color={theme['c-font']}>取消</Text>
               </Button>
               <Button onPress={handleAuth} style={[styles.authBtn, { backgroundColor: theme['c-primary'] }]}>
-                <Text color="#fff">确认</Text>
+                <Text color={theme['c-primary-light-1000']}>确认</Text>
               </Button>
             </View>
           </View>
@@ -375,33 +373,36 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
 
   return (
     <View style={styles.settingsOverlay}>
-      <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+      <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-700'] }]}>
         <View style={styles.settingsHeader}>
-          <Text size={20} color={theme['c-font']} fontWeight="bold">⚙️ 音乐助手设置</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon name="setting" size={20} color={theme['c-font']} />
+            <Text size={20} color={theme['c-font']} fontWeight="bold" style={{ marginLeft: 8 }}>音乐助手设置</Text>
+          </View>
           <Button onPress={onClose} style={styles.headerBtn}>
-            <Text color={theme['c-font-label']} size={24}>✕</Text>
+            <Icon name="close" size={24} color={theme['c-font-label']} />
           </Button>
         </View>
         <ScrollView style={styles.settingsList}>
           {allServices.map((s) => (
             <View key={s.id} style={[styles.serviceItem, {
               borderColor: activeId === s.id ? theme['c-primary'] : 'transparent',
-              backgroundColor: theme['c-primary-light-100-alpha-20'],
+              backgroundColor: theme['c-primary-light-100-alpha-900'],
             }]}>
               <View style={styles.serviceHeader}>
                 <Text size={15} color={theme['c-font']} fontWeight="500">{s.name}</Text>
                 {s.builtin ? (
-                  <View style={[styles.badge, { backgroundColor: theme['c-primary-light-400-alpha-40'] }]}>
+                  <View style={[styles.badge, { backgroundColor: theme['c-primary-light-400-alpha-700'] }]}>
                     <Text size={10} color={theme['c-primary-font']}>内置可用</Text>
                   </View>
                 ) : s.id.startsWith('custom_') ? (
-                  <View style={[styles.badge, { backgroundColor: theme['c-primary-light-400-alpha-40'] }]}>
+                  <View style={[styles.badge, { backgroundColor: theme['c-primary-light-400-alpha-700'] }]}>
                     <Text size={10} color={theme['c-primary-font']}>自定义</Text>
                   </View>
                 ) : null}
                 {s.id.startsWith('custom_') && (
                   <Button onPress={() => handleDeleteCustom(s.id)} style={{ padding: 4, marginLeft: 8 }}>
-                    <Text size={16} color="#F44336">✕</Text>
+                    <Icon name="close" size={16} color={theme['c-liked']} />
                   </Button>
                 )}
               </View>
@@ -409,7 +410,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 <View style={styles.xunfeiCustomSection}>
                   <TouchableOpacity
                     onPress={() => setShowXunfeiDetail(true)}
-                    style={[styles.detailBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'] }]}
+                    style={[styles.detailBtn, { backgroundColor: theme['c-primary-light-100-alpha-700'] }]}
                   >
                     <Text size={13} color={theme['c-font-label']}>
                       {xunfeiConfig.appid ? '已配置 - 点击修改' : '点击配置应用信息'}
@@ -418,7 +419,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 </View>
               ) : !s.builtin ? (
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={apiKeys[s.id] || ''}
                   onChangeText={(v) => setApiKeys((prev) => ({ ...prev, [s.id]: v }))}
                   placeholder={`输入 ${s.name} API Key`}
@@ -436,10 +437,10 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 onPress={() => handleSelect(s.id)}
                 disabled={activeId === s.id}
                 style={[styles.selectBtn, {
-                  backgroundColor: activeId === s.id ? theme['c-primary'] : theme['c-primary-light-100-alpha-40'],
+                  backgroundColor: activeId === s.id ? theme['c-primary'] : theme['c-primary-light-100-alpha-700'],
                 }]}
               >
-                <Text color={activeId === s.id ? '#fff' : theme['c-font']} size={13}>
+                <Text color={activeId === s.id ? theme['c-primary-light-1000'] : theme['c-font']} size={13}>
                   {activeId === s.id ? '✓ 当前使用' : '切换到此服务'}
                 </Text>
               </Button>
@@ -449,14 +450,14 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
           {/* 添加自定义API按钮 */}
           <TouchableOpacity
             onPress={() => setShowCustomApi(true)}
-            style={[styles.addCustomBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'], borderColor: theme['c-primary-light-400-alpha-40'] }]}
+            style={[styles.addCustomBtn, { backgroundColor: theme['c-primary-light-100-alpha-700'], borderColor: theme['c-primary-light-400-alpha-700'] }]}
           >
             <Text size={14} color={theme['c-primary']}>+ 添加自定义API服务</Text>
           </TouchableOpacity>
 
           <View style={styles.authSection}>
             <Button onPress={() => setShowAuth(true)} style={[styles.authBtn, { backgroundColor: theme['c-primary'] }]}>
-              <Text color="#fff" size={14}>🔐 输入管理员密码授权（无限使用）</Text>
+              <Text color={theme['c-primary-light-1000']} size={14}>🔐 输入管理员密码授权（无限使用）</Text>
             </Button>
           </View>
         </ScrollView>
@@ -464,26 +465,26 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
         {/* 科大讯飞自定义配置弹窗 */}
         <Modal visible={showXunfeiDetail} transparent animationType="slide" onRequestClose={() => setShowXunfeiDetail(false)}>
           <View style={styles.settingsOverlay}>
-            <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+            <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-700'] }]}>
               <View style={styles.settingsHeader}>
                 <Text size={18} color={theme['c-font']} fontWeight="bold">📝 科大讯飞配置</Text>
                 <Button onPress={() => setShowXunfeiDetail(false)} style={styles.headerBtn}>
-                  <Text color={theme['c-font-label']} size={24}>✕</Text>
+                  <Icon name="close" size={24} color={theme['c-font-label']} />
                 </Button>
               </View>
               <ScrollView style={styles.settingsList}>
-                <Text size={12} color={theme['c-font-label']} style={styles.descText}>
+                <Text size={12} color={theme['c-font-label']} style={[styles.descText, { backgroundColor: theme['c-primary-light-100-alpha-900'] }]}>
                   请在 https://console.xfyun.cn/app/myapp 获取以下信息
                 </Text>
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={xunfeiConfig.appid}
                   onChangeText={(v) => setXunfeiConfig((prev) => ({ ...prev, appid: v }))}
                   placeholder="APPID"
                   placeholderTextColor={theme['c-font-label']}
                 />
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={xunfeiConfig.apiKey}
                   onChangeText={(v) => setXunfeiConfig((prev) => ({ ...prev, apiKey: v }))}
                   placeholder="API Key"
@@ -491,7 +492,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                   secureTextEntry
                 />
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={xunfeiConfig.apiSecret}
                   onChangeText={(v) => setXunfeiConfig((prev) => ({ ...prev, apiSecret: v }))}
                   placeholder="API Secret"
@@ -499,7 +500,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                   secureTextEntry
                 />
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={xunfeiConfig.wssUrl || 'wss://spark-api.xf-yun.com/v4.0/chat'}
                   onChangeText={(v) => setXunfeiConfig((prev) => ({ ...prev, wssUrl: v }))}
                   placeholder="WebSocket URL"
@@ -513,10 +514,10 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                         key={m.id}
                         onPress={() => setSelectedModel(m.id)}
                         style={[styles.modelBtn, { 
-                          backgroundColor: selectedModel === m.id ? theme['c-primary'] : theme['c-primary-light-100-alpha-40'],
+                          backgroundColor: selectedModel === m.id ? theme['c-primary'] : theme['c-primary-light-100-alpha-700'],
                         }]}
                       >
-                        <Text size={12} color={selectedModel === m.id ? '#fff' : theme['c-font']}>
+                        <Text size={12} color={selectedModel === m.id ? theme['c-primary-light-1000'] : theme['c-font']}>
                           {m.name}
                         </Text>
                         <Text size={10} color={selectedModel === m.id ? 'rgba(255,255,255,0.7)' : theme['c-font-label']}>
@@ -527,7 +528,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                   </View>
                 </View>
                 <Button onPress={handleSaveXunfeiConfig} style={[styles.saveBtn, { backgroundColor: theme['c-primary'] }]}>
-                  <Text color="#fff" size={14}>保存配置</Text>
+                  <Text color={theme['c-primary-light-1000']} size={14}>保存配置</Text>
                 </Button>
               </ScrollView>
             </View>
@@ -537,20 +538,20 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
         {/* 自定义API配置弹窗 */}
         <Modal visible={showCustomApi} transparent animationType="slide" onRequestClose={() => setShowCustomApi(false)}>
           <View style={styles.settingsOverlay}>
-            <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+            <View style={[styles.settingsBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-700'] }]}>
               <View style={styles.settingsHeader}>
                 <Text size={18} color={theme['c-font']} fontWeight="bold">🔗 添加自定义API</Text>
                 <Button onPress={() => setShowCustomApi(false)} style={styles.headerBtn}>
-                  <Text color={theme['c-font-label']} size={24}>✕</Text>
+                  <Icon name="close" size={24} color={theme['c-font-label']} />
                 </Button>
               </View>
               <ScrollView style={styles.settingsList}>
-                <Text size={12} color={theme['c-font-label']} style={styles.descText}>
+                <Text size={12} color={theme['c-font-label']} style={[styles.descText, { backgroundColor: theme['c-primary-light-100-alpha-900'] }]}>
                   支持所有 OpenAI 兼容的 API 接口。请填写完整信息后点击保存。
                 </Text>
                 <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>服务名称</Text>
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={customName}
                   onChangeText={setCustomName}
                   placeholder="例如：我的AI服务"
@@ -558,7 +559,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 />
                 <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>API 地址</Text>
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={customUrl}
                   onChangeText={setCustomUrl}
                   placeholder="https://api.example.com/v1/chat/completions"
@@ -568,7 +569,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 />
                 <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>模型名称</Text>
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={customModel}
                   onChangeText={setCustomModel}
                   placeholder="例如：gpt-4o-mini, qwen-turbo"
@@ -578,7 +579,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 />
                 <Text size={13} color={theme['c-font']} style={{ marginTop: 8, marginBottom: 4 }}>API Key</Text>
                 <TextInput
-                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-40'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                  style={[styles.keyInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-700'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                   value={customKey}
                   onChangeText={setCustomKey}
                   placeholder="sk-xxxxxxxx"
@@ -588,7 +589,7 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                   autoCorrect={false}
                 />
                 <Button onPress={handleAddCustomService} style={[styles.saveBtn, { backgroundColor: theme['c-primary'], marginTop: 16 }]}>
-                  <Text color="#fff" size={14}>保存</Text>
+                  <Text color={theme['c-primary-light-1000']} size={14}>保存</Text>
                 </Button>
               </ScrollView>
             </View>
@@ -598,13 +599,13 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
         {/* 管理员授权弹窗 */}
         <Modal visible={showAuth} transparent animationType="fade" onRequestClose={() => setShowAuth(false)}>
           <View style={styles.authOverlay}>
-            <View style={[styles.authBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-40'] }]}>
+            <View style={[styles.authBox, { backgroundColor: theme['c-content-background'], borderColor: theme['c-primary-light-400-alpha-700'] }]}>
               <Text size={18} color={theme['c-font']} style={styles.authTitle} fontWeight="bold">🔐 管理员授权</Text>
               <Text size={14} color={theme['c-font-label']} style={styles.authDesc}>
                 输入管理员密码解锁无限对话次数
               </Text>
               <TextInput
-                style={[styles.authInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-600'], backgroundColor: theme['c-primary-light-100-alpha-20'] }]}
+                style={[styles.authInput, { color: theme['c-font'], borderColor: theme['c-primary-light-400-alpha-800'], backgroundColor: theme['c-primary-light-100-alpha-900'] }]}
                 value={authPwd}
                 onChangeText={setAuthPwd}
                 placeholder="请输入管理员密码"
@@ -613,11 +614,11 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
                 onSubmitEditing={handleAuth}
               />
               <View style={styles.authBtns}>
-                <Button onPress={() => setShowAuth(false)} style={[styles.authBtn, { backgroundColor: theme['c-primary-light-100-alpha-40'] }]}>
+                <Button onPress={() => setShowAuth(false)} style={[styles.authBtn, { backgroundColor: theme['c-primary-light-100-alpha-700'] }]}>
                   <Text color={theme['c-font']}>取消</Text>
                 </Button>
                 <Button onPress={handleAuth} style={[styles.authBtn, { backgroundColor: theme['c-primary'] }]}>
-                  <Text color="#fff">确认</Text>
+                  <Text color={theme['c-primary-light-1000']}>确认</Text>
                 </Button>
               </View>
             </View>
@@ -630,11 +631,6 @@ const SettingsModal = memo(({ onClose, theme, onRefresh }: { onClose: () => void
 
 const styles = createStyle({
   container: { flex: 1 },
-  topGradient: { 
-    height: 8, 
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -653,7 +649,7 @@ const styles = createStyle({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: 8,
   },
   headerBtn: { 
     padding: 8, 
@@ -666,12 +662,12 @@ const styles = createStyle({
     alignItems: 'center',
   },
   msgList: { 
-    padding: 15, 
-    paddingBottom: 100,
+    padding: 16, 
+    paddingBottom: 24,
     paddingTop: 20,
   },
   msgRow: { 
-    marginVertical: 12, 
+    marginVertical: 8, 
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
@@ -688,19 +684,22 @@ const styles = createStyle({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
-    marginLeft: 10,
+    marginHorizontal: 8,
   },
   msgBubble: {
     maxWidth: '75%',
-    padding: 14,
-    borderRadius: 20,
+    padding: 12,
+    borderRadius: 12,
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 2,
   },
   msgText: { 
     fontSize: 15, 
     lineHeight: 22,
-    whiteSpace: 'pre-wrap',
   },
   loadingWrap: {
     flexDirection: 'row',
@@ -711,11 +710,11 @@ const styles = createStyle({
     alignItems: 'flex-end',
     padding: 12,
     borderTopWidth: 1,
-    paddingBottom: 40,
+    paddingBottom: 16,
   },
   inputWrap: {
     flex: 1,
-    borderRadius: 25,
+    borderRadius: 18,
     borderWidth: 1,
     paddingHorizontal: 16,
     paddingVertical: 10,
@@ -731,21 +730,21 @@ const styles = createStyle({
   sendBtn: {
     width: 45,
     height: 45,
-    borderRadius: 50,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 10,
+    marginLeft: 8,
   },
   authOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.65)',
+    backgroundColor: 'rgba(50,50,50,0.3)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 30,
   },
   authBox: {
     width: '100%',
-    borderRadius: 20,
+    borderRadius: 4,
     padding: 25,
     borderWidth: 1,
   },
@@ -764,12 +763,12 @@ const styles = createStyle({
     flex: 1, 
     marginHorizontal: 10, 
     paddingVertical: 14, 
-    borderRadius: 14, 
+    borderRadius: 12, 
     alignItems: 'center',
   },
   settingsOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.65)',
+    backgroundColor: 'rgba(50,50,50,0.3)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -777,7 +776,7 @@ const styles = createStyle({
   settingsBox: {
     width: '100%',
     maxHeight: '85%',
-    borderRadius: 20,
+    borderRadius: 4,
     padding: 20,
     borderWidth: 1,
   },
@@ -789,9 +788,9 @@ const styles = createStyle({
   },
   settingsList: { maxHeight: 500 },
   serviceItem: {
-    padding: 15,
+    padding: 16,
     marginBottom: 12,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 2,
   },
   serviceHeader: {
@@ -832,7 +831,7 @@ const styles = createStyle({
     marginBottom: 20,
   },
   addCustomBtn: {
-    padding: 14,
+    padding: 12,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: 'dashed',
@@ -843,7 +842,6 @@ const styles = createStyle({
   descText: {
     marginBottom: 12,
     padding: 10,
-    backgroundColor: 'rgba(0,0,0,0.1)',
     borderRadius: 8,
     textAlign: 'center',
   },
@@ -863,7 +861,7 @@ const styles = createStyle({
   },
   saveBtn: {
     paddingVertical: 14,
-    borderRadius: 14,
+    borderRadius: 12,
     alignItems: 'center',
     marginTop: 10,
   },

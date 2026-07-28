@@ -14,6 +14,7 @@ import {
 import {toast} from "@/utils/tools"
 import {fetchAndApplyDetailedQuality} from "@/utils/musicSdk/wy/musicDetail.js"
 import userState from '@/store/user/state'
+import { getTrialUrl, isTrialEnabled } from '@/utils/musicSdk/trialSource'
 
 /* export const setMusicUrl = ({ musicInfo, type, url }: {
   musicInfo: LX.Music.MusicInfo
@@ -157,6 +158,16 @@ export const getMusicUrl = async ({
     void saveMusicUrl(currentMusicInfo, targetQuality, url)
     if (currentMusicInfo.id !== musicInfo.id) void saveMusicUrl(musicInfo, targetQuality, url)
     return url
+  }).catch(async (err) => {
+    // 所有音源失败后，尝试试听接口兜底
+    if (isTrialEnabled()) {
+      const trialResult = await getTrialUrl(musicInfo)
+      if (trialResult) {
+        void saveMusicUrl(musicInfo, '128k', trialResult.url)
+        return trialResult.url
+      }
+    }
+    throw err
   })
 }
 
