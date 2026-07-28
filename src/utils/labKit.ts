@@ -373,6 +373,47 @@ export const LAB_FEATURES: LabFeature[] = [
     risk: 'low',
     category: 'ai',
   },
+  // ============ V7 新增功能 ============
+  {
+    key: 'lab.lyricWallpaper',
+    name: '歌词壁纸生成器',
+    description: '把喜欢的歌词生成精美手机壁纸，10种风格可选，自动提取精华句',
+    icon: '🖼️',
+    risk: 'low',
+    category: 'ui',
+  },
+  {
+    key: 'lab.musicAlbum',
+    name: '音乐相册',
+    description: '把音乐和本地照片关联，生成回忆相册，支持"那年今日"回忆功能',
+    icon: '📷',
+    risk: 'medium',
+    category: 'lifestyle',
+  },
+  {
+    key: 'lab.vinylMode',
+    name: '黑胶唱片模式',
+    description: '复古黑胶播放界面，模拟唱针落下/抬起，黑胶底噪和刮擦音效',
+    icon: '💿',
+    risk: 'medium',
+    category: 'player',
+  },
+  {
+    key: 'lab.musicZodiac',
+    name: '音乐星座',
+    description: '根据听歌习惯分析你的音乐星座，12种星座类型，性格分析和相性测试',
+    icon: '♈',
+    risk: 'low',
+    category: 'ai',
+  },
+  {
+    key: 'lab.lyricLoveLetter',
+    name: '歌词情书生成',
+    description: 'AI把多首歌的歌词串联成情书，6种风格可选，支持自定义收信人',
+    icon: '💌',
+    risk: 'low',
+    category: 'ai',
+  },
 ]
 
 /** 检查实验室功能是否启用 */

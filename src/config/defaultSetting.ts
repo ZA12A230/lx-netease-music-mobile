@@ -191,6 +191,12 @@ const defaultSetting: LX.AppSetting = {
   'lab.smartRadio': false,
   'lab.playbackAnalytics': false,
   'lab.lyricTranslatePK': false,
+  // 实验室V7扩展功能
+  'lab.lyricWallpaper': false,
+  'lab.musicAlbum': false,
+  'lab.vinylMode': false,
+  'lab.musicZodiac': false,
+  'lab.lyricLoveLetter': false,
 }
 
 // 使用新年皮肤

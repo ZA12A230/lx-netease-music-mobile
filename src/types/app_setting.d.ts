@@ -481,6 +481,12 @@ declare global {
       'lab.smartRadio': boolean
       'lab.playbackAnalytics': boolean
       'lab.lyricTranslatePK': boolean
+      // 实验室V7扩展功能
+      'lab.lyricWallpaper': boolean
+      'lab.musicAlbum': boolean
+      'lab.vinylMode': boolean
+      'lab.musicZodiac': boolean
+      'lab.lyricLoveLetter': boolean
     }
   }
 }
