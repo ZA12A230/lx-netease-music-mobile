@@ -465,6 +465,12 @@ declare global {
       'lab.artistGraph': boolean
       'lab.playlistRepair': boolean
       'lab.musicQuiz': boolean
+      // 实验室V4扩展功能
+      'lab.musicDNA': boolean
+      'lab.lyricCreator': boolean
+      'lab.voiceCommand': boolean
+      'lab.playlistMashup': boolean
+      'lab.musicTimeline': boolean
     }
   }
 }

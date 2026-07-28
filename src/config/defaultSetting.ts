@@ -175,6 +175,12 @@ const defaultSetting: LX.AppSetting = {
   'lab.artistGraph': false,
   'lab.playlistRepair': false,
   'lab.musicQuiz': false,
+  // 实验室V4扩展功能
+  'lab.musicDNA': false,
+  'lab.lyricCreator': false,
+  'lab.voiceCommand': false,
+  'lab.playlistMashup': false,
+  'lab.musicTimeline': false,
 }
 
 // 使用新年皮肤

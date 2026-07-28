@@ -266,6 +266,47 @@ export const LAB_FEATURES: LabFeature[] = [
     risk: 'low',
     category: 'game',
   },
+  // ============ V4 新增功能 ============
+  {
+    key: 'lab.musicDNA',
+    name: '音乐DNA分析',
+    description: '分析你的音乐品味特征，生成独特的音乐DNA图谱和人格类型',
+    icon: '🧬',
+    risk: 'low',
+    category: 'ai',
+  },
+  {
+    key: 'lab.lyricCreator',
+    name: '歌词创作助手',
+    description: 'AI辅助歌词创作，提供押韵查找、灵感生成、续写改写等功能',
+    icon: '✍️',
+    risk: 'low',
+    category: 'ai',
+  },
+  {
+    key: 'lab.voiceCommand',
+    name: '语音控制',
+    description: '通过语音指令控制播放、切歌、搜索、调节音量等操作',
+    icon: '🎙️',
+    risk: 'medium',
+    category: 'tool',
+  },
+  {
+    key: 'lab.playlistMashup',
+    name: '歌单混搭',
+    description: '将多个歌单智能混搭，生成融合多种风格的新歌单',
+    icon: '🔀',
+    risk: 'low',
+    category: 'tool',
+  },
+  {
+    key: 'lab.musicTimeline',
+    name: '音乐时间轴',
+    description: '按时间线展示你的听歌历程，回顾不同时期的音乐偏好',
+    icon: '📈',
+    risk: 'low',
+    category: 'ui',
+  },
 ]
 
 /** 检查实验室功能是否启用 */
