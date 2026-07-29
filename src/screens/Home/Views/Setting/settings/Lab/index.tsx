@@ -1,9 +1,10 @@
-import { memo, useCallback } from 'react'
-import { View, ScrollView, Alert } from 'react-native'
+import { memo, useCallback, useState, type ComponentType } from 'react'
+import { View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 
 import Section from '../../components/Section'
 import CheckBoxItem from '../../components/CheckBoxItem'
 import Text from '@/components/common/Text'
+import { Icon } from '@/components/common/Icon'
 import { useTheme } from '@/store/theme/hook'
 import { useI18n } from '@/lang'
 import { useSettingValue } from '@/store/setting/hook'
@@ -15,6 +16,20 @@ import {
   toggleFeature,
   type LabFeature,
 } from '@/utils/labKit'
+import LyricWallpaper from './LyricWallpaper'
+import MusicAlbum from './MusicAlbum'
+import VinylMode from './VinylMode'
+import MusicZodiac from './MusicZodiac'
+import LyricLoveLetter from './LyricLoveLetter'
+
+// 有独立UI界面的功能映射
+const FEATURE_UI_MAP: Partial<Record<string, ComponentType>> = {
+  'lab.lyricWallpaper': LyricWallpaper,
+  'lab.musicAlbum': MusicAlbum,
+  'lab.vinylMode': VinylMode,
+  'lab.musicZodiac': MusicZodiac,
+  'lab.lyricLoveLetter': LyricLoveLetter,
+}
 
 const CATEGORY_NAMES: Record<LabFeature['category'], string> = {
   player: '播放器',
@@ -32,10 +47,11 @@ const RISK_META: Record<LabFeature['risk'], { label: string; color: string }> = 
   high: { label: '高风险', color: '#F44336' },
 }
 
-const FeatureItem = memo(({ feature }: { feature: LabFeature }) => {
+const FeatureItem = memo(({ feature, onOpen }: { feature: LabFeature; onOpen?: (key: string) => void }) => {
   const theme = useTheme()
   const risk = RISK_META[feature.risk]
   const enabled = useSettingValue(feature.key as any)
+  const hasUI = !!FEATURE_UI_MAP[feature.key]
 
   const handleToggle = useCallback((value: boolean) => {
     if (value && feature.risk !== 'low') {
@@ -70,6 +86,11 @@ const FeatureItem = memo(({ feature }: { feature: LabFeature }) => {
       <Text size={12} color={theme['c-font-label']} style={styles.featureDesc}>
         {feature.description}
       </Text>
+      {hasUI && enabled && onOpen && (
+        <TouchableOpacity onPress={() => onOpen(feature.key)} style={[styles.openBtn, { backgroundColor: theme['c-primary'] }]}>
+          <Text size={12} color="#fff">打开设置</Text>
+        </TouchableOpacity>
+      )}
     </View>
   )
 })
@@ -78,6 +99,7 @@ export default memo(() => {
   const t = useI18n()
   const theme = useTheme()
   const labEnabled = useSettingValue('lab.enabled')
+  const [activeSubPage, setActiveSubPage] = useState<string | null>(null)
 
   const handleToggleLab = useCallback((enabled: boolean) => {
     if (enabled) {
@@ -100,6 +122,30 @@ export default memo(() => {
       )
     }
   }, [])
+
+  const handleOpenFeature = useCallback((key: string) => {
+    setActiveSubPage(key)
+  }, [])
+
+  const handleBack = useCallback(() => {
+    setActiveSubPage(null)
+  }, [])
+
+  // 渲染子页面
+  if (activeSubPage) {
+    const SubComponent = FEATURE_UI_MAP[activeSubPage]
+    if (SubComponent) {
+      return (
+        <Section title={t('setting_lab') || '实验室'}>
+          <TouchableOpacity onPress={handleBack} style={styles.backBar}>
+            <Icon name="chevron-left" size={18} color={theme['c-primary']} />
+            <Text size={14} color={theme['c-primary']} style={styles.backText}>返回实验室</Text>
+          </TouchableOpacity>
+          <SubComponent />
+        </Section>
+      )
+    }
+  }
 
   const grouped = getFeaturesByCategory()
 
@@ -126,6 +172,7 @@ export default memo(() => {
                   <FeatureItem
                     key={feature.key}
                     feature={feature}
+                    onOpen={handleOpenFeature}
                   />
                 ))}
               </View>
@@ -199,6 +246,22 @@ const styles = createStyle({
   featureDesc: {
     marginTop: 4,
     lineHeight: 18,
+  },
+  openBtn: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+    marginTop: 8,
+  },
+  backBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+  },
+  backText: {
+    marginLeft: 4,
   },
   warningBox: {
     marginTop: 16,
